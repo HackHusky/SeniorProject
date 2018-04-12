@@ -1,0 +1,6 @@
+classes= 4
+train  = savcra/train.txt
+valid  = savcra/train.txt
+names = savcra/savcra.names
+backup = backup/
+
