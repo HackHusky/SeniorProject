@@ -53,7 +53,7 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
     socket.on('I', function(data) {
         console.log("Start");
-        //AutoImage();
+        AutoImage();
 
     });
 
