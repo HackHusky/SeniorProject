@@ -1,0 +1,82 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+  <script src="js/client.js"></script>
+  
+  <title>ESP32 SSE Example</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type='text/css'>
+    html, body { height: 100%; background: #f9f9f9; }
+    body { font-family: 'Courier New', Courier, monospace; }
+    #container
+    {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      max-height: 100%;
+      max-width: 100%;
+    }
+    #container div
+    {
+      text-align: center;
+      width: 100%;
+    }
+    #container div button
+    {
+      text-align: center;
+      width: calc(100% / 3.2);
+      border-radius: 5px;
+        border: 1px solid #ccc;
+        background: white;
+      height: 50%;
+    }
+    #container div button:hover
+    {
+      background: #ccc;
+      cursor: pointer;
+    }
+    #container div input
+    {
+        border-radius: 5px;
+        height: 50%;
+        border: 1px solid #ccc;
+    }
+    #container div p { color: red; }
+    #server-data
+    {
+      height: 92.5%;
+      width:90%;
+      border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id='container'>
+    <div style='height: 7.5%; margin-top: 2.5%;'>
+      <button type='button' id='StartI' >Start Image</button>
+      <button type='button' id='StartV'>Start Video</button>
+      <button onclick='toggleInterval(this)'>Auto with Voice</button>
+      <input name='client-data' id='client-data' type='text' style='width:90%' />
+    </div>
+    <div style='height: 3.5%;'> <p id='response'> Voice Command Box </p> </div>
+    <div style='height: 90%; margin-top: 2.5%;'>
+      <textarea id='server-data' ></textarea>
+    </div>
+  </div>
+</body>
+</html>

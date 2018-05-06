@@ -5,6 +5,7 @@ var app = require('http').createServer(handler)
 
 app.listen(5000); // Use local port 5000
 
+var parse; 
 
 // Http handler function
 function handler (req, res) {
@@ -62,6 +63,13 @@ io.sockets.on('connection', function (socket) {
         AutoVideo();
 
     });
+
+    setInterval(function(){
+    console.log("sending data");
+    socket.emit('data', parse);   
+        },500);
+    //console.log("data" + data);
+    //socket.emit('data', parse);
 });
 
 function AutoImage()
@@ -113,18 +121,18 @@ function AutoImage()
 
 function AutoVideo()
 {
+    console.log("start Video");
     var exec = require('child_process').exec;
     var cmd3 = './video_test.sh';
 
-    var parse; 
     fs = require('fs')
-    setTimeout(function(){ 
-        exec(cmd3, function(error, stdout, stderr) {
-          // command output is in stdout
-        });
-    }, 1000);
+    // setTimeout(function(){ 
+    //     exec(cmd3, function(error, stdout, stderr) {
+    //       // command output is in stdout
+    //     });
+    // }, 1000);
 
-
+    var parent = this;
     setTimeout(function(){  
         fs.readFile('data.txt', 'utf8', function (err,data) {
           if (err) {
@@ -136,7 +144,7 @@ function AutoVideo()
     }, 2000);
 
     setTimeout(function(){  
-
+        console.log("Start Reading");
         var format = JSON.parse(parse);
         console.log(format.Object);
         setInterval(function(){ 
@@ -146,13 +154,19 @@ function AutoVideo()
             }
             parse = data;
             });
-            console.log(parse);
-            
-
+            //console.log(parse);
+            //this.socket.emit('data', parse);
+            //emit(parse);   
         }, 3000);
     }, 3000);
-
-
 };
+
+// function emit (data) {
+//     console.log("emit");
+//     io.sockets.on('connection', function (socket) {
+//         console.log("data" + data);
+//         socket.emit('data', data);
+//     });
+// }
 
 

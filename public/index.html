@@ -1,82 +1,259 @@
-
-
 <!DOCTYPE html>
 <html>
-<head>
-  <script src="https://maps.googleapis.com/maps/api/js"></script>
-  <script src="js/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
-  <script src="js/client.js"></script>
-  
-  <title>ESP32 SSE Example</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style type='text/css'>
-    html, body { height: 100%; background: #f9f9f9; }
-    body { font-family: 'Courier New', Courier, monospace; }
-    #container
-    {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      background: white;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      max-height: 100%;
-      max-width: 100%;
+	<head>
+		<title>SAVCRAS</title>
+		<meta name="description" content="Version4">
+		<meta http-equiv = 'Content-Language' content = 'en'/>
+		<link rel="shortcut icon" type="image/x-icon" href="denko.png">
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+  		<script src="js/jquery.min.js"></script>
+      <script src="script.js"></script>
+
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+  		<script src="js/client.js"></script>
+      <style> 
+      footer p{
+  overflow: hidden;
+  font-family: "Courier New";
+  font-size: 14px;
+  text-align: center;
+  padding: 10px 20px;
+  background-color: #EBE9E4;
+}
+ 
+h1 {
+  font-family: "Franklin Gothic Medium";
+  text-align: center;
+  background-color: #8ECDF5;
+  color: black;
+  line-height: 3rem;
+}
+
+h3 {
+  padding: 0px;
+  margin-left: 10px;
+  text-align: left;
+/*  color: #0D364F;*/
+  display: 5;
+}
+
+p {
+  font-family: "Avant Garde";
+}
+
+ul {
+  list-style: none;
+  margin-bottom: 10px;
+  line-height: .2;
+  padding: 0px 20px;
+}
+
+.container {
+  margin: 0 auto;
+  display: grid;
+  height: 75vh;
+  grid-template-rows: auto 3fr auto 1fr;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 5px;
+}
+
+.section-title {
+  border: solid 1px gold;
+  background-color: #FFE7AF;
+  font-family: "Franklin Gothic Medium";
+}
+
+.video-section {
+  grid-row-start: 1;
+  grid-column-start: 1;
+  grid-row-end: span 2;
+  grid-column-end: span 1;
+}
+
+.voice-title {
+  grid-row-start: 3;
+  grid-column-start: 1;
+  grid-row-end: span 1;
+  grid-column-end: span 1;
+}
+
+.voice-section {
+  grid-row-start: 4;
+  grid-column-start: 1;
+  grid-row-end: span 1;
+  grid-column-end: span 1;
+  padding: 5px;
+}
+
+.feedback-title {
+  grid-row-start: 1;
+  grid-column-start: 2;
+  grid-column-end: span 1;
+  grid-row-end: span 1;
+}
+
+.output-panel {
+  grid-row-start: 2;
+  grid-column-start: 2;
+  grid-row-end: span 1;
+  grid-column-end: span 1;
+  overflow: hidden;
+}
+
+.log-box {
+  padding: 5px 5px 5px 5px;
+  font-family: "Courier";
+  font-size: 15px;
+  overflow-wrap: break-word;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.sent-cmd-title {
+  grid-row-start: 3;
+  grid-column-start: 2;
+  grid-row-end: span 1;
+  grid-column-end: span 1;
+}
+
+.cmd-box {
+  grid-row-start: 4;
+  grid-column-start: 2;
+  grid-row-end: span 1;
+  grid-column-end: span 1;
+  overflow: auto;
+}
+
+.note .header {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 0px;
+}
+
+.note .content {
+    margin-bottom: 0px;
+  text-indent: 20px;
+}
+
+.note .delete-note{
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+/*Was left in tutorial code. I could not figure out what this was in order to modify or remove*/
+.no-browser-support {
+    display: none;
+    font-size: 1.2rem;
+    color: #E64427;
+    margin-top: 35px;
+}
+
+.app {
+    margin: 40px auto;
+}
+
+#recording-instructions {
+    margin: 15px auto 60px;
+    font-family: "Courier";
+}
+
+#usr-cmd-msg {
+  font-family: "Courier";
+  overflow-wrap: break-word;
+}
+
+#video-box {
+  border: 1px solid #EBE9E4;
+  width: 100%;
+  max-height: 900px;
+}
+
+#video-stream {
+  width: 100%;
+  height: 100%;
+  background-color: #EBE9E4;
+}
+
+#voice-textarea {
+  width: 100%;
+  min-height: 100px;
+  border: solid gray 1px;
+  overflow: auto;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 50px 25px;
     }
-    #container div
-    {
-      text-align: center;
-      width: 100%;
+
+    button {
+        margin-bottom: 10px;
     }
-    #container div button
-    {
-      text-align: center;
-      width: calc(100% / 3.2);
-      border-radius: 5px;
-        border: 1px solid #ccc;
-        background: white;
-      height: 50%;
-    }
-    #container div button:hover
-    {
-      background: #ccc;
-      cursor: pointer;
-    }
-    #container div input
-    {
-        border-radius: 5px;
-        height: 50%;
-        border: 1px solid #ccc;
-    }
-    #container div p { color: red; }
-    #server-data
-    {
-      height: 92.5%;
-      width:90%;
-      border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-  </style>
-</head>
-<body>
-  <div id='container'>
-    <div style='height: 7.5%; margin-top: 2.5%;'>
-      <button type='button' id='StartI' >Start Image</button>
+} 
+
+      </style>
+	</head>
+
+	<body>
+
+		<header>
+			<h1>Semi-Automatic Voice Controlled Robotic Arm System</h1>
+		</header>
+
+		<div class="container">
+			<div class="video-section" id="video-box">
+				<video autoplay="true" id="video-stream" controls>
+				</video>
+			</div>
+			<div class="voice-title section-title">
+				<h3>Command Input</h3>
+			</div>
+
+			<div class="voice-section">
+				<textarea id="voice-textarea" placeholder="Input Command by recording or typing."></textarea>
+				<div>
+					<button id="start-record-btn" title="Start Recording">Start</button>
+            		<button id="pause-record-btn" title="Pause Recording">Pause</button>
+            		<button id="send-cmd-btn" title="Send Command">Send</button>
+            		<p id="recording-instructions"> To begin: Hit <strong>Start</strong> to enable Microphone.</p>
+            	</div>
+			</div>
+
+			<div class="feedback-title section-title">
+				<h3>System Feedback</h3>
+			</div>
+
+			<div class="output-panel">
+				<div class="log-box">
+					<ul id="feedback-msg">
+						<li><p class="no-notes">No Output Yet.</p></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="sent-cmd-title section-title">
+				<h3>Sent Commands</h3>
+			</div>
+			
+			<div class="cmd-box">
+				<ul id="usr-cmd-msg">
+					<li><p class="no-notes">You don't have any notes.</p></li>
+				</ul> 
+			</div>
+		</div>
+     <button type='button' id='StartI' >Start Image</button>
       <button type='button' id='StartV'>Start Video</button>
-      <button onclick='toggleInterval(this)'>Auto with Voice</button>
-      <input name='client-data' id='client-data' type='text' style='width:90%' />
-    </div>
-    <div style='height: 3.5%;'> <p id='response'> Voice Command Box </p> </div>
-    <div style='height: 90%; margin-top: 2.5%;'>
-      <textarea id='server-data' ></textarea>
-    </div>
-  </div>
-</body>
+		<footer>
+			<p>San Jose State University Senior Project Spring 2018<br><strong>Created by:</strong> Matthew Chew, Truonghuy Mai, and Elizabeth Nguyen<br> <strong>Advisor:</strong> Frank Lin<br> </p>
+		</footer>
+
+		<!-- JavaScripts to Run -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.10.0"> </script>
+        <script src="script.js"></script>
+        <script src="direction-generator.js"></script>
+
+	</body>
 </html>

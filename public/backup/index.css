@@ -1,0 +1,180 @@
+footer p{
+	overflow: hidden;
+	font-family: "Courier New";
+	font-size: 14px;
+	text-align: center;
+	padding: 10px 20px;
+	background-color: #EBE9E4;
+}
+ 
+h1 {
+	font-family: "Franklin Gothic Medium";
+	text-align: center;
+	background-color: #8ECDF5;
+	color: black;
+	line-height: 3rem;
+}
+
+h3 {
+	padding: 0px;
+	margin-left: 10px;
+	text-align: left;
+/*	color: #0D364F;*/
+	display: 5;
+}
+
+p {
+	font-family: "Avant Garde";
+}
+
+ul {
+	list-style: none;
+	margin-bottom: 10px;
+	line-height: .2;
+	padding: 0px 20px;
+}
+
+.container {
+	margin: 0 auto;
+	display: grid;
+	height: 75vh;
+	grid-template-rows: auto 3fr auto 1fr;
+	grid-template-columns: 2fr 1fr;
+	grid-gap: 5px;
+}
+
+.section-title {
+	border: solid 1px gold;
+	background-color: #FFE7AF;
+	font-family: "Franklin Gothic Medium";
+}
+
+.video-section {
+	grid-row-start: 1;
+	grid-column-start: 1;
+	grid-row-end: span 2;
+	grid-column-end: span 1;
+}
+
+.voice-title {
+	grid-row-start: 3;
+	grid-column-start: 1;
+	grid-row-end: span 1;
+	grid-column-end: span 1;
+}
+
+.voice-section {
+	grid-row-start: 4;
+	grid-column-start: 1;
+	grid-row-end: span 1;
+	grid-column-end: span 1;
+	padding: 5px;
+}
+
+.feedback-title {
+	grid-row-start: 1;
+	grid-column-start: 2;
+	grid-column-end: span 1;
+	grid-row-end: span 1;
+}
+
+.output-panel {
+	grid-row-start: 2;
+	grid-column-start: 2;
+	grid-row-end: span 1;
+	grid-column-end: span 1;
+	overflow: hidden;
+}
+
+.log-box {
+	padding: 5px 5px 5px 5px;
+	font-family: "Courier";
+	font-size: 15px;
+	overflow-wrap: break-word;
+	overflow: auto;
+	overflow-x: hidden;
+}
+
+.sent-cmd-title {
+	grid-row-start: 3;
+	grid-column-start: 2;
+	grid-row-end: span 1;
+	grid-column-end: span 1;
+}
+
+.cmd-box {
+	grid-row-start: 4;
+	grid-column-start: 2;
+	grid-row-end: span 1;
+	grid-column-end: span 1;
+	overflow: auto;
+}
+
+.note .header {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 0px;
+}
+
+.note .content {
+    margin-bottom: 0px;
+	text-indent: 20px;
+}
+
+.note .delete-note{
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+/*Was left in tutorial code. I could not figure out what this was in order to modify or remove*/
+.no-browser-support {
+    display: none;
+    font-size: 1.2rem;
+    color: #E64427;
+    margin-top: 35px;
+}
+
+.app {
+    margin: 40px auto;
+}
+
+#recording-instructions {
+    margin: 15px auto 60px;
+    font-family: "Courier";
+}
+
+#usr-cmd-msg {
+	font-family: "Courier";
+	overflow-wrap: break-word;
+}
+
+#video-box {
+	border: 1px solid #EBE9E4;
+	width: 100%;
+	max-height: 900px;
+}
+
+#video-stream {
+	width: 100%;
+	height: 100%;
+	background-color: #EBE9E4;
+}
+
+#voice-textarea {
+	width: 100%;
+	min-height: 100px;
+	border: solid gray 1px;
+	overflow: auto;
+	overflow-wrap: break-word;
+	overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 50px 25px;
+    }
+
+    button {
+        margin-bottom: 10px;
+    }
+} 

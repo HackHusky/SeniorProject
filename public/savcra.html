@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SAVCRAS</title>
+		<meta name="description" content="Version4">
+		<meta http-equiv = 'Content-Language' content = 'en'/>
+		<link href="index.css" type="text/css" rel="stylesheet">
+		<link rel="shortcut icon" type="image/x-icon" href="denko.png">
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+  		<script src="js/jquery.min.js"></script>
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+  		<script src="js/client.js"></script>
+	</head>
+	<body>
+
+		<header>
+			<h1>Semi-Automatic Voice Controlled Robotic Arm System</h1>
+		</header>
+
+		<div class="container">
+			<div class="video-section" id="video-box">
+				<video autoplay="true" id="video-stream" controls>
+				</video>
+			</div>
+			<div class="voice-title section-title">
+				<h3>Command Input</h3>
+			</div>
+
+			<div class="voice-section">
+				<textarea id="voice-textarea" placeholder="Input Command by recording or typing."></textarea>
+				<div>
+					<button id="start-record-btn" title="Start Recording">Start</button>
+            		<button id="pause-record-btn" title="Pause Recording">Pause</button>
+            		<button id="send-cmd-btn" title="Send Command">Send</button>
+            		<p id="recording-instructions"> To begin: Hit <strong>Start</strong> to enable Microphone.</p>
+            	</div>
+			</div>
+
+			<div class="feedback-title section-title">
+				<h3>System Feedback</h3>
+			</div>
+
+			<div class="output-panel">
+				<div class="log-box">
+					<ul id="feedback-msg">
+						<li><p class="no-notes">No Output Yet.</p></li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="sent-cmd-title section-title">
+				<h3>Sent Commands</h3>
+			</div>
+			
+			<div class="cmd-box">
+				<ul id="usr-cmd-msg">
+					<li><p class="no-notes">You don't have any notes.</p></li>
+				</ul> 
+			</div>
+		</div>
+
+		<footer>
+			<p>San Jose State University Senior Project Spring 2018<br><strong>Created by:</strong> Matthew Chew, Truonghuy Mai, and Elizabeth Nguyen<br> <strong>Advisor:</strong> Frank Lin<br> </p>
+		</footer>
+
+		<!-- JavaScripts to Run -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.10.0"> </script>
+        <script src="script.js"></script>
+        <script src="direction-generator.js"></script>
+
+	</body>
+</html>
