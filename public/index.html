@@ -12,186 +12,200 @@
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
   		<script src="js/client.js"></script>
       <style> 
-      footer p{
-  overflow: hidden;
-  font-family: "Courier New";
-  font-size: 14px;
-  text-align: center;
-  padding: 10px 20px;
-  background-color: #EBE9E4;
-}
- 
-h1 {
-  font-family: "Franklin Gothic Medium";
-  text-align: center;
-  background-color: #8ECDF5;
-  color: black;
-  line-height: 3rem;
-}
+        footer {
+          position: absolute;
+          bottom: 0px;
+          width: 100%;
+        }
 
-h3 {
-  padding: 0px;
-  margin-left: 10px;
-  text-align: left;
-/*  color: #0D364F;*/
-  display: 5;
-}
+        footer p {
+          overflow: hidden;
+          font-family: "Courier New";
+          font-size: 14px;
+          text-align: center;
+          margin-bottom: 0px;
+          padding: 10px 20px;
+          background-color: #EBE9E4;
+        }
+         
+        h1 {
+          font-family: "Franklin Gothic Medium";
+          text-align: center;
+          background-color: #8ECDF5;
+          color: black;
+          line-height: 3rem;
+          font-size: 3vw !important;
+        }
 
-p {
-  font-family: "Avant Garde";
-}
+        h3 {
+          padding: 0px;
+          margin-left: 10px;
+          text-align: left;
+        /*  color: #0D364F;*/
+          display: 5;
+        }
 
-ul {
-  list-style: none;
-  margin-bottom: 10px;
-  line-height: .2;
-  padding: 0px 20px;
-}
+        p {
+          font-family: "Avant Garde";
+          margin-bottom: 0px;
+          line-height: normal;
+        }
 
-.container {
-  margin: 0 auto;
-  display: grid;
-  height: 75vh;
-  grid-template-rows: auto 3fr auto 1fr;
-  grid-template-columns: 2fr 1fr;
-  grid-gap: 5px;
-}
+        ul {
+          list-style: none;
+          margin-bottom: 10px;
+          line-height: .2;
+          padding: 0px 20px;
+        }
 
-.section-title {
-  border: solid 1px gold;
-  background-color: #FFE7AF;
-  font-family: "Franklin Gothic Medium";
-}
+        .container {
+          margin: 0 auto;
+          display: grid;
+          height: 75vh;
+          grid-template-rows: auto 3fr auto 1fr;
+          grid-template-columns: 2fr 1fr;
+          grid-gap: 5px;
+        }
 
-.video-section {
-  grid-row-start: 1;
-  grid-column-start: 1;
-  grid-row-end: span 2;
-  grid-column-end: span 1;
-}
+        .section-title {
+          border: solid 1px gold;
+          background-color: #FFE7AF;
+          font-family: "Franklin Gothic Medium";
+        }
 
-.voice-title {
-  grid-row-start: 3;
-  grid-column-start: 1;
-  grid-row-end: span 1;
-  grid-column-end: span 1;
-}
+        .video-section {
+          grid-row-start: 1;
+          grid-column-start: 1;
+          grid-row-end: span 2;
+          grid-column-end: span 1;
+        }
 
-.voice-section {
-  grid-row-start: 4;
-  grid-column-start: 1;
-  grid-row-end: span 1;
-  grid-column-end: span 1;
-  padding: 5px;
-}
+        .voice-title {
+          grid-row-start: 3;
+          grid-column-start: 1;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
 
-.feedback-title {
-  grid-row-start: 1;
-  grid-column-start: 2;
-  grid-column-end: span 1;
-  grid-row-end: span 1;
-}
+        .voice-section {
+          grid-row-start: 4;
+          grid-column-start: 1;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+          padding: 5px;
+        }
 
-.output-panel {
-  grid-row-start: 2;
-  grid-column-start: 2;
-  grid-row-end: span 1;
-  grid-column-end: span 1;
-  overflow: hidden;
-}
+        .feedback-title {
+          grid-row-start: 1;
+          grid-column-start: 2;
+          grid-column-end: span 1;
+          grid-row-end: span 1;
+        }
 
-.log-box {
-  padding: 5px 5px 5px 5px;
-  font-family: "Courier";
-  font-size: 15px;
-  overflow-wrap: break-word;
-  overflow: auto;
-  overflow-x: hidden;
-}
+        .output-panel {
+          grid-row-start: 2;
+          grid-column-start: 2;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+          overflow: auto;
+        }
 
-.sent-cmd-title {
-  grid-row-start: 3;
-  grid-column-start: 2;
-  grid-row-end: span 1;
-  grid-column-end: span 1;
-}
+        .log-box {
+          padding: 5px 5px 5px 5px;
+          font-family: "Courier";
+          font-size: 15px;
+          overflow-wrap: break-word;
+          overflow: auto;
+          overflow-x: hidden;
+        }
 
-.cmd-box {
-  grid-row-start: 4;
-  grid-column-start: 2;
-  grid-row-end: span 1;
-  grid-column-end: span 1;
-  overflow: auto;
-}
+        .sent-cmd-title {
+          grid-row-start: 3;
+          grid-column-start: 2;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
 
-.note .header {
-    font-size: 0.9em;
-    color: #888;
-    margin-bottom: 0px;
-}
+        .cmd-box {
+          grid-row-start: 4;
+          grid-column-start: 2;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+          overflow: auto;
+        }
 
-.note .content {
-    margin-bottom: 0px;
-  text-indent: 20px;
-}
+        .clear {
+          float: right;
+        }
 
-.note .delete-note{
-    text-decoration: none;
-    margin-left: 5px;
-}
+        .note .header {
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 0px;
+        }
 
-/*Was left in tutorial code. I could not figure out what this was in order to modify or remove*/
-.no-browser-support {
-    display: none;
-    font-size: 1.2rem;
-    color: #E64427;
-    margin-top: 35px;
-}
+        .note .content {
+            margin-bottom: 0px;
+          text-indent: 20px;
+        }
 
-.app {
-    margin: 40px auto;
-}
+        .note .delete-note{
+            text-decoration: none;
+            margin-left: 5px;
+        }
 
-#recording-instructions {
-    margin: 15px auto 60px;
-    font-family: "Courier";
-}
+        /*Was left in tutorial code. I could not figure out what this was in order to modify or remove*/
+        .no-browser-support {
+            display: none;
+            font-size: 1.2rem;
+            color: #E64427;
+            margin-top: 35px;
+        }
 
-#usr-cmd-msg {
-  font-family: "Courier";
-  overflow-wrap: break-word;
-}
+        .app {
+            margin: 40px auto;
+        }
 
-#video-box {
-  border: 1px solid #EBE9E4;
-  width: 100%;
-  max-height: 900px;
-}
+        #recording-instructions {
+            margin: 15px auto 60px;
+            font-family: "Courier";
+        }
 
-#video-stream {
-  width: 100%;
-  height: 100%;
-  background-color: #EBE9E4;
-}
+        #usr-cmd-msg {
+          font-family: "Courier";
+          overflow-wrap: break-word;
+        }
 
-#voice-textarea {
-  width: 100%;
-  min-height: 100px;
-  border: solid gray 1px;
-  overflow: auto;
-  overflow-wrap: break-word;
-  overflow-x: hidden;
-}
+        #video-box {
+          border: 1px solid #EBE9E4;
+          width: 100%;
+          max-height: 900px;
+        }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 50px 25px;
-    }
+        #video-stream {
+          width: 100%;
+          height: 100%;
+          background-color: #EBE9E4;
+        }
 
-    button {
-        margin-bottom: 10px;
-    }
-} 
+        #voice-textarea {
+          width: 100%;
+          min-height: 100px;
+          border: solid gray 1px;
+          overflow: auto;
+          overflow-wrap: break-word;
+          overflow-x: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 50px 25px;
+            }
+
+            button {
+                margin-bottom: 10px;
+            }
+        } 
 
       </style>
 	</head>
@@ -217,12 +231,17 @@ ul {
 					<button id="start-record-btn" title="Start Recording">Start</button>
             		<button id="pause-record-btn" title="Pause Recording">Pause</button>
             		<button id="send-cmd-btn" title="Send Command">Send</button>
-            		<p id="recording-instructions"> To begin: Hit <strong>Start</strong> to enable Microphone.</p>
+                <button type='button' id='StartI' >Start Image</button>
+                <button type='button' id='StartV'>Start Video</button>
+                <p id="recording-instructions"> To begin: Hit <strong>Start</strong> to enable Microphone.</p>
             	</div>
 			</div>
 
 			<div class="feedback-title section-title">
-				<h3>System Feedback</h3>
+        <h3>
+          System Feedback
+          <button class="btn btn-primary clear" id="clear-feedback-btn" title="Clear Feedback">Clear</button>
+        </h3>
 			</div>
 
 			<div class="output-panel">
@@ -234,7 +253,10 @@ ul {
 			</div>
 
 			<div class="sent-cmd-title section-title">
-				<h3>Sent Commands</h3>
+        <h3>
+          Sent Commands
+          <button class="btn btn-primary clear" id="clear-cmds-btn" title="Clear Commands">Clear</button>
+        </h3>
 			</div>
 			
 			<div class="cmd-box">
@@ -243,14 +265,13 @@ ul {
 				</ul> 
 			</div>
 		</div>
-     <button type='button' id='StartI' >Start Image</button>
-      <button type='button' id='StartV'>Start Video</button>
 		<footer>
 			<p>San Jose State University Senior Project Spring 2018<br><strong>Created by:</strong> Matthew Chew, Truonghuy Mai, and Elizabeth Nguyen<br> <strong>Advisor:</strong> Frank Lin<br> </p>
 		</footer>
 
 		<!-- JavaScripts to Run -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.10.0"> </script>
         <script src="script.js"></script>
         <script src="direction-generator.js"></script>
