@@ -193,7 +193,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
         int class = max_index(probs[i], classes);
         float prob = probs[i][class];
         if(prob > thresh){
-            printf("%i \n",thresh);
+            //printf("%i \n",thresh);
             //// for comparison with OpenCV version of DNN Darknet Yolo v2
             //printf("\n %f, %f, %f, %f, ", boxes[i].x, boxes[i].y, boxes[i].w, boxes[i].h);
             // int k;
@@ -292,7 +292,9 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
 
 #ifdef OPENCV
 void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
-{
+{   
+    int flag_cv = 0;
+    printf("CV CALL\n");
     int i;
     FILE *fp;
     for (i = 0; i < num; ++i) {
@@ -384,9 +386,9 @@ void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, f
             CvFont font;
             cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, font_size, font_size, 0, font_size * 3, 8);  
             cvPutText(show_img, names[class], pt_text, &font, black_color);
-            flag=1;
+            flag_cv=1;
         }
-        else if(flag == 0 )
+        else if(flag_cv == 0 )
         {
             fp = fopen("data.txt", "w+");
             if(fp == NULL){printf("FILE FUCKED \n");}

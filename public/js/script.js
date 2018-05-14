@@ -9,32 +9,31 @@ var feedbackListLocation = $('ul#feedback-msg');
 var noteContent = ''; 
 var usrCmdTag = 'cmd-';
 var feedbackTag = 'log-';
-var global_data = '';
-exports.global_data = global_data;
+var global_voice = '';
 /*---------------------
       Video Feed 
 ----------------------*/
-var video = document.querySelector("#video-stream");
+// var video = document.querySelector("#video-stream");
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+// navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 
-if (navigator.getUserMedia)
-{
-  navigator.getUserMedia({video: true}, handleVideo, videoError);
-}
+// if (navigator.getUserMedia)
+// {
+//   navigator.getUserMedia({video: true}, handleVideo, videoError);
+// }
 
-function handleVideo(stream) 
-{
-  video.src = window.URL.createObjectURL(stream);
-  createFeedbackMsg('Video Stream connected successfully.');
-  console.log('Video Stream connected successfully.');
-}
+// function handleVideo(stream) 
+// {
+//   video.src = window.URL.createObjectURL(stream);
+//   createFeedbackMsg('Video Stream connected successfully.');
+//   console.log('Video Stream connected successfully.');
+// }
 
-function videoError(e) 
-{
-  createFeedbackMsg('Video Not Connected.');
-  console.log('Video Not Connected.');
-}
+// function videoError(e) 
+// {
+//   createFeedbackMsg('Video Not Connected.');
+//   console.log('Video Not Connected.');
+// }
 
 /*-----------------------------
       Voice Recognition 
@@ -66,7 +65,8 @@ recognition.onresult = function(event) {
   if(!mobileRepeatBug) {
     noteContent += transcript;
     voiceTextArea.val(noteContent);
-    console.log("Note Content: "+ noteContent);
+    global_voice = noteContent;
+    //console.log("Note Content: "+ noteContent);
   }
 };
 

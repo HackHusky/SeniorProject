@@ -9,8 +9,7 @@ var feedbackListLocation = $('ul#feedback-msg');
 var noteContent = ''; 
 var usrCmdTag = 'cmd-';
 var feedbackTag = 'log-';
-var global_data = '';
-exports.global_data = global_data;
+
 /*---------------------
       Video Feed 
 ----------------------*/
