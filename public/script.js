@@ -13,7 +13,7 @@ var feedbackTag = 'log-';
 var objTarget = 'none';
 var cmdAction = 'idle'; 
 
-const targetTable = 
+const TargetTable = 
 [
   "water bottle", 
   "waterbottle",
@@ -191,6 +191,7 @@ feedbackListLocation.on('click', function(e) {
   }
   renderOutput(feedbackTag, feedbackListLocation);
 });
+
 /*-----------------------------
       Output Functions
 ------------------------------*/
@@ -255,12 +256,13 @@ function deleteNote(dateTime, tag) {
 
 function parseCommand()
 {
-  for(const key in targetTable)
+  for(const key in TargetTable)
   {
-    if(noteContent.toLowerCase().includes(targetTable[key]))
+    if(noteContent.toLowerCase().includes(TargetTable[key]))
     {
-      objTarget = targetTable[key];
+      objTarget = TargetTable[key];
       createFeedbackMsg('Object target set to: ' + objTarget);
+      console.log("TargetTable update = " + objTarget);
     }
   }
 
@@ -270,6 +272,7 @@ function parseCommand()
     {
       cmdAction = actionTable[key];
       createFeedbackMsg('Command Action set to: ' + cmdAction);
+      console.log("actionTable update = " + cmdAction);
     }
   }
 }
