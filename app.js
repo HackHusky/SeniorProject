@@ -5,7 +5,8 @@ var app = require('http').createServer(handler)
 
 app.listen(5000); // Use local port 5000
 
-var parse; 
+var parse;
+var flag_start = 1;  
 
 // Http handler function
 function handler (req, res) {
@@ -60,7 +61,10 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('V', function(data) {
         console.log("Start");
-        AutoVideo();
+        if(flag_start == 1){
+            AutoVideo();
+            flag_start = 0;
+        }
 
     });
 
@@ -126,11 +130,11 @@ function AutoVideo()
     var cmd3 = './video_test.sh';
 
     fs = require('fs')
-    // setTimeout(function(){ 
-    //     exec(cmd3, function(error, stdout, stderr) {
-    //       // command output is in stdout
-    //     });
-    // }, 1000);
+     setTimeout(function(){ 
+         exec(cmd3, function(error, stdout, stderr) {
+           // command output is in stdout
+         });
+     }, 1000);
 
     var parent = this;
     setTimeout(function(){  
@@ -154,7 +158,7 @@ function AutoVideo()
             }
             parse = data;
             });
-            //console.log(parse);
+            console.log(parse);
             //this.socket.emit('data', parse);
             //emit(parse);   
         }, 3000);
@@ -168,5 +172,7 @@ function AutoVideo()
 //         socket.emit('data', data);
 //     });
 // }
+
+
 
 

@@ -10,26 +10,6 @@ var noteContent = '';
 var usrCmdTag = 'cmd-';
 var feedbackTag = 'log-';
 
-var objTarget = 'none';
-var cmdAction = 'idle'; 
-
-const TargetTable = 
-[
-  "water bottle", 
-  "waterbottle",
-  "none"
-];
-
-const actionTable = 
-[
-  "grab", 
-  "pick up", 
-  "idle"
-];
-
-var global_data = '';
-exports.global_data = global_data;
-
 /*---------------------
       Video Feed 
 ----------------------*/
@@ -133,41 +113,12 @@ $('#send-cmd-btn').on('click', function(e) {
   }
   else 
   {
-    parseCommand();
     saveNote(new Date().toLocaleString(), noteContent, usrCmdTag);
       instructions.text('Command save and sent successfully.');
       noteContent = '';
       renderOutput(usrCmdTag, usrCmdListLocation);
       voiceTextArea.val('');
   }
-});
-
-$('#clear-feedback-btn').on('click',function(e)
-{
-  for(var i = 0; i < localStorage.length; i++)
-  {
-    var itemKey = localStorage.key(i);
-    if(itemKey.substring(0,feedbackTag.length) == feedbackTag)
-    {
-      localStorage.removeItem(itemKey);
-           i = i - 1;
-    }
-  }
-  renderOutput(feedbackTag, feedbackListLocation);
-});
-
-$('#clear-cmds-btn').on('click',function(e)
-{
-  for(var i = 0; i < localStorage.length; i++)
-  {
-    var itemKey = localStorage.key(i);
-    if(itemKey.substring(0,usrCmdTag.length) == usrCmdTag)
-    {
-      localStorage.removeItem(itemKey);
-      i = i - 1;
-    }
-  }
-  renderOutput(usrCmdTag, usrCmdListLocation);
 });
 
 usrCmdListLocation.on('click', function(e) {
@@ -195,7 +146,6 @@ feedbackListLocation.on('click', function(e) {
   }
   renderOutput(feedbackTag, feedbackListLocation);
 });
-
 /*-----------------------------
       Output Functions
 ------------------------------*/
@@ -258,44 +208,8 @@ function deleteNote(dateTime, tag) {
   localStorage.removeItem(tag + dateTime); 
 }
 
-function parseCommand()
-{
-  for(const key in TargetTable)
-  {
-    if(noteContent.toLowerCase().includes(TargetTable[key]))
-    {
-      objTarget = TargetTable[key];
-      createFeedbackMsg('Object target set to: ' + objTarget);
-      console.log("TargetTable update = " + objTarget);
-    }
-  }
-
-  for(const key in actionTable)
-  {
-    if(noteContent.toLowerCase().includes(actionTable[key]))
-    {
-      cmdAction = actionTable[key];
-      createFeedbackMsg('Command Action set to: ' + cmdAction);
-      console.log("actionTable update = " + cmdAction);
-    }
-  }
-}
-
 /*-----------------------------
-      Setup Code
+  Continously Executed Code
 ------------------------------*/
-var firstRun = true;
-
-if(firstRun)
-{
-  renderOutput(usrCmdTag, usrCmdListLocation);
-  renderOutput(feedbackTag, feedbackListLocation);
-  firstRun = false;
-}
-
-// module.exports = {
-//   getTagNotes: getTagNotes,
-//   createFeedbackMsg: createFeedbackMsg,
-//   deleteNote: deleteNote,
-//   x: 5,
-// };
+renderOutput(usrCmdTag, usrCmdListLocation);
+renderOutput(feedbackTag, feedbackListLocation);

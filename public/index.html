@@ -8,10 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="https://maps.googleapis.com/maps/api/js"></script>
   		<script src="js/jquery.min.js"></script>
-      <!-- <script src="script.js"></script> -->
-
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
-  		<script src="js/client.js"></script>
       <style> 
         footer {
           position: absolute;
@@ -155,7 +152,6 @@
             margin-left: 5px;
         }
 
-        /*Was left in tutorial code. I could not figure out what this was in order to modify or remove*/
         .no-browser-support {
             display: none;
             font-size: 1.2rem;
@@ -222,49 +218,52 @@
 				</video>
 			</div>
 			<div class="voice-title section-title">
-				<h3>Command Input</h3>
-			</div>
+        <h3>Command Input</h3>
+      </div>
 
-			<div class="voice-section">
-				<textarea id="voice-textarea" placeholder="Input Command by recording or typing."></textarea>
-				<div>
-					<button class="btn btn-primary" id="start-record-btn" title="Start Recording">Start</button>
-            		<button class="btn btn-primary" id="pause-record-btn" title="Pause Recording">Pause</button>
-            		<button class="btn btn-primary" id="send-cmd-btn" title="Send Command">Send</button>
+      <div class="voice-section">
+        <textarea id="voice-textarea" placeholder="Input Command by recording or typing."></textarea>
+        <div>
+          <button class="btn btn-primary" id="start-record-btn" title="Start Recording">Start</button>
+                <button class="btn btn-primary" id="pause-record-btn" title="Pause Recording">Pause</button>
+                <button class="btn btn-primary" id="send-cmd-btn" title="Send Command">Send</button>
                 <button class="btn btn-primary" type='button' id='StartI' >Start Image</button>
                 <button class="btn btn-primary" type='button' id='StartV'>Start Video</button>
+                <button class="btn btn-primary" type='button' id='StartArm'>Start Arm</button>
                 <p id="recording-instructions"> To begin: Hit <strong>Start</strong> to enable Microphone.</p>
-            	</div>
-			</div>
+              </div>
+      </div>
 
-			<div class="feedback-title section-title">
+      <div class="feedback-title section-title">
         <h3>
           System Feedback
           <button class="btn btn-primary clear" id="clear-feedback-btn" title="Clear Feedback">Clear</button>
         </h3>
-			</div>
+      </div>
 
-			<div class="output-panel">
-				<div class="log-box">
-					<ul id="feedback-msg">
-						<li><p class="no-notes">No Output Yet.</p></li>
-					</ul>
-				</div>
-			</div>
+      <div class="output-panel">
+        <div class="log-box">
+          <ul id="feedback-msg">
+            <li><p class="no-notes">No Output Yet.</p></li>
+          </ul>
+        </div>
+      </div>
 
-			<div class="sent-cmd-title section-title">
+      <div class="sent-cmd-title section-title">
         <h3>
           Sent Commands
           <button class="btn btn-primary clear" id="clear-cmds-btn" title="Clear Commands">Clear</button>
         </h3>
-			</div>
-			
-			<div class="cmd-box">
-				<ul id="usr-cmd-msg">
-					<li><p class="no-notes">You don't have any notes.</p></li>
-				</ul> 
-			</div>
-		</div>
+      </div>
+      
+      <div class="cmd-box">
+        <ul id="usr-cmd-msg">
+          <li><p class="no-notes">You don't have any notes.</p></li>
+        </ul> 
+      </div>
+    </div>
+      <button type='button' id='StartI' >Start Image</button>
+      <button type='button' id='StartV'>Start Video</button>
 		<footer>
 			<p>San Jose State University Senior Project Spring 2018<br><strong>Created by:</strong> Matthew Chew, Truonghuy Mai, and Elizabeth Nguyen<br> <strong>Advisor:</strong> Frank Lin<br> </p>
 		</footer>
@@ -273,7 +272,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.10.0"> </script>
-    <script src="script.js"></script>
+
+    <script src="js/script.js"></script>
+    <script src="js/client.js"></script>
     <script src="direction-generator.js"></script>
 
 	</body>
