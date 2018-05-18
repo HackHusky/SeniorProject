@@ -3,7 +3,7 @@ var socket = io.connect('http://localhost:5000');
 
 var arm_data = {
 	read_cam_id : 0,
-    read_cam_shoulder : 0,
+    read_cam_shoulder : -45,
     read_cam_elbow : 0,
     read_gimbal : 0,
     read_base : 0,
@@ -42,6 +42,13 @@ $(document).ready(function() {
 		auto_flag = 1 ;
 	};
 
+	document.getElementById('StartArm').onclick = function() 
+	{
+		WaterBottle();
+
+	};
+
+
 });
 
 socket.on('data', function(data) {
@@ -60,17 +67,17 @@ function sendData(value)
 	oReq.send();
 }
 
-setInterval(function(){
-	//console.log(global_data.Object);
-    format = JSON.parse(global_data);
-    //console.log(format);
-    //console.log("global voice " + global_voice);
-    if(format.Object == "WaterBottle")
-    {
-    	//console.log("object found");
-    	AutoArm();
-    }
-}, 1000);
+// setInterval(function(){
+// 	//console.log(global_data.Object);
+//     format = JSON.parse(global_data);
+//     //console.log(format);
+//     //console.log("global voice " + global_voice);
+//     if(format.Object == "WaterBottle")
+//     {
+//     	//console.log("object found");
+//     	AutoArm();
+//     }
+// }, 1000);
 
 function AutoArm()
 {
@@ -326,6 +333,284 @@ function WaterBottle_30()
 	setTimeout(function(){
 		arm_data.read_claw_motion = 0;
 		arm_data.read_shoulder=61;	
+		sendData(arm_data);
+	}, 20000);
+}
+
+
+function WaterBottle()
+{
+	var shoulder_value_1 = 110;
+	var shoulder_value_2 = 80;
+	var elbow_value_1 = 40;
+	var elbow_value_2 = 45;
+	console.log("Arm Start");
+	setTimeout(function(){
+		console.log("Initial");
+		arm_data.read_shoulder = shoulder_value_1;
+		arm_data.read_elbow = elbow_value_1;
+		arm_data.read_claw_motion = 0; 
+		sendData(arm_data);
+	}, 1);
+
+		setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 400);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 600);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 800);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1000);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1400);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1600);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1800);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2000);
+
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2400);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2400);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2600);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2800);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3000);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3200);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3400);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3600);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3800);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4000);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4200)
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4400)
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4600)
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4800)
+
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  0;
+		sendData(arm_data);
+	}, 5000);
+
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_shoulder = shoulder_value_2;
+		arm_data.read_elbow = elbow_value_1;
+		arm_data.read_claw_motion = 0; 
+		sendData(arm_data);
+	}, 6000);
+			
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_shoulder = shoulder_value_2;
+		arm_data.read_elbow = elbow_value_1;
+		arm_data.read_claw_motion = 0; 
+		sendData(arm_data);
+	}, 7500);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 8000);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 8200);
+
+		setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 8400);
+
+			setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 8600);
+
+				setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9000);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9200);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9400);
+
+		setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9200);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9400);
+		setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9200);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9600);
+	
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 9800);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 10000);
+		setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 12000);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 14000);
+	
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 16000);
+
+	setTimeout(function(){
+		arm_data.read_claw_motion =  1;
+		sendData(arm_data);
+	}, 18000);
+
+
+	setTimeout(function(){
+		arm_data.read_claw_motion = 0;
+		arm_data.read_shoulder=shoulder_value_2;	
 		sendData(arm_data);
 	}, 20000);
 }

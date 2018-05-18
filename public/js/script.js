@@ -22,18 +22,18 @@ var global_voice = '';
 //   navigator.getUserMedia({video: true}, handleVideo, videoError);
 // }
 
-// function handleVideo(stream) 
-// {
-//   video.src = window.URL.createObjectURL(stream);
-//   createFeedbackMsg('Video Stream connected successfully.');
-//   console.log('Video Stream connected successfully.');
-// }
+function handleVideo(stream) 
+{
+  video.src = window.URL.createObjectURL("http://localhost:8080/stream.wmv");
+  createFeedbackMsg('Video Stream connected successfully.');
+  console.log('Video Stream connected successfully.');
+}
 
-// function videoError(e) 
-// {
-//   createFeedbackMsg('Video Not Connected.');
-//   console.log('Video Not Connected.');
-// }
+function videoError(e) 
+{
+  createFeedbackMsg('Video Not Connected.');
+  console.log('Video Not Connected.');
+}
 
 /*-----------------------------
       Voice Recognition 
@@ -65,7 +65,7 @@ recognition.onresult = function(event) {
   if(!mobileRepeatBug) {
     noteContent += transcript;
     voiceTextArea.val(noteContent);
-    global_voice = noteContent;
+    //global_voice = noteContent;
     //console.log("Note Content: "+ noteContent);
   }
 };
@@ -116,6 +116,7 @@ $('#send-cmd-btn').on('click', function(e) {
   {
     saveNote(new Date().toLocaleString(), noteContent, usrCmdTag);
       instructions.text('Command save and sent successfully.');
+      global_voice = noteContent;
       noteContent = '';
       renderOutput(usrCmdTag, usrCmdListLocation);
       voiceTextArea.val('');
