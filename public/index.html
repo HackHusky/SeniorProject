@@ -7,8 +7,8 @@
 		<link rel="shortcut icon" type="image/x-icon" href="denko.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<script src="https://maps.googleapis.com/maps/api/js"></script>
-  		<script src="js/jquery.min.js"></script>
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
       <style> 
         footer {
           position: absolute;
@@ -32,6 +32,7 @@
           background-color: #8ECDF5;
           color: black;
           line-height: 3rem;
+          padding: 10px;
           font-size: 3vw !important;
         }
 
@@ -61,7 +62,7 @@
           display: grid;
           height: 75vh;
           grid-template-rows: auto 3fr auto 1fr;
-          grid-template-columns: 2fr 1fr;
+          grid-template-columns: 3fr 3fr 3fr 3fr 6fr;
           grid-gap: 5px;
         }
 
@@ -75,34 +76,34 @@
           grid-row-start: 1;
           grid-column-start: 1;
           grid-row-end: span 2;
-          grid-column-end: span 1;
+          grid-column-end: span 4;
         }
 
         .voice-title {
           grid-row-start: 3;
           grid-column-start: 1;
           grid-row-end: span 1;
-          grid-column-end: span 1;
+          grid-column-end: span 4;
         }
 
         .voice-section {
           grid-row-start: 4;
           grid-column-start: 1;
           grid-row-end: span 1;
-          grid-column-end: span 1;
+          grid-column-end: span 4;
           padding: 5px;
         }
 
         .feedback-title {
           grid-row-start: 1;
-          grid-column-start: 2;
+          grid-column-start: 5;
           grid-column-end: span 1;
           grid-row-end: span 1;
         }
 
         .output-panel {
           grid-row-start: 2;
-          grid-column-start: 2;
+          grid-column-start: 5;
           grid-row-end: span 1;
           grid-column-end: span 1;
           overflow: auto;
@@ -119,14 +120,14 @@
 
         .sent-cmd-title {
           grid-row-start: 3;
-          grid-column-start: 2;
+          grid-column-start: 5;
           grid-row-end: span 1;
           grid-column-end: span 1;
         }
 
         .cmd-box {
           grid-row-start: 4;
-          grid-column-start: 2;
+          grid-column-start: 5;
           grid-row-end: span 1;
           grid-column-end: span 1;
           overflow: auto;
@@ -214,8 +215,8 @@
 
 		<div class="container">
 			<div class="video-section" id="video-box">
-				<video autoplay="true" id="video-stream" controls>
-				</video>
+				<!-- <video autoplay="true" id="video-stream" controls>
+				</video> -->
 			</div>
 			<div class="voice-title section-title">
         <h3>Command Input</h3>
@@ -262,8 +263,6 @@
         </ul> 
       </div>
     </div>
-      <button type='button' id='StartI' >Start Image</button>
-      <button type='button' id='StartV'>Start Video</button>
 		<footer>
 			<p>San Jose State University Senior Project Spring 2018<br><strong>Created by:</strong> Matthew Chew, Truonghuy Mai, and Elizabeth Nguyen<br> <strong>Advisor:</strong> Frank Lin<br> </p>
 		</footer>
@@ -275,7 +274,6 @@
 
     <script src="js/script.js"></script>
     <script src="js/client.js"></script>
-    <script src="direction-generator.js"></script>
 
 	</body>
 </html>

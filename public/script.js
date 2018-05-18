@@ -27,33 +27,34 @@ const actionTable =
   "idle"
 ];
 
+var global_voice = '';
 var global_data = '';
 exports.global_data = global_data;
 
 /*---------------------
       Video Feed 
 ----------------------*/
-var video = document.querySelector("#video-stream");
+// var video = document.querySelector("#video-stream");
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+// navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
 
-if (navigator.getUserMedia)
-{
-  navigator.getUserMedia({video: true}, handleVideo, videoError);
-}
+// if (navigator.getUserMedia)
+// {
+//   navigator.getUserMedia({video: true}, handleVideo, videoError);
+// }
 
-function handleVideo(stream) 
-{
-  video.src = window.URL.createObjectURL(stream);
-  createFeedbackMsg('Video Stream connected successfully.');
-  console.log('Video Stream connected successfully.');
-}
+// function handleVideo(stream) 
+// {
+//   video.src = window.URL.createObjectURL(stream);
+//   createFeedbackMsg('Video Stream connected successfully.');
+//   console.log('Video Stream connected successfully.');
+// }
 
-function videoError(e) 
-{
-  createFeedbackMsg('Video Not Connected.');
-  console.log('Video Not Connected.');
-}
+// function videoError(e) 
+// {
+//   createFeedbackMsg('Video Not Connected.');
+//   console.log('Video Not Connected.');
+// }
 
 /*-----------------------------
       Voice Recognition 
@@ -154,6 +155,7 @@ $('#clear-feedback-btn').on('click',function(e)
     }
   }
   renderOutput(feedbackTag, feedbackListLocation);
+  instructions.text("System Feedback has been cleared.");
 });
 
 $('#clear-cmds-btn').on('click',function(e)
@@ -168,6 +170,7 @@ $('#clear-cmds-btn').on('click',function(e)
     }
   }
   renderOutput(usrCmdTag, usrCmdListLocation);
+  instructions.text("Sent-Commands have been cleared.");
 });
 
 usrCmdListLocation.on('click', function(e) {
