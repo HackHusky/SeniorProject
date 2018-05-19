@@ -14,7 +14,6 @@
 #else
 #include <sys/time.h>
 #endif
-
 #define FRAMES 3
 
 #ifdef OPENCV
@@ -219,6 +218,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
 			det_img = in_img;
             det   = in;
             det_s = in_s;
+            //imwrite("/Text/image.jpg", show_img);
+
         }else {
             fetch_in_thread(0);
 			det_img = in_img;
@@ -230,6 +231,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, int cam_index, const ch
                 disp = det;
             }
             show_image(disp, "Demo");
+
             cvWaitKey(1);
         }
         --delay;

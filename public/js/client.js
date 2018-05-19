@@ -3,11 +3,11 @@ var socket = io.connect('http://localhost:5000');
 
 var arm_data = {
 	read_cam_id : 0,
-    read_cam_shoulder : -45,
+    read_cam_shoulder :0,
     read_cam_elbow : 0,
     read_gimbal : 0,
     read_base : 0,
-    read_shoulder : 0,
+    read_shoulder : 80,
     read_elbow : 101,
     read_wrist : 0,
     read_wrist_rot : 100,
@@ -27,6 +27,24 @@ var oReq = new XMLHttpRequest();
 const URL = 'http://192.168.4.1';
 var source_ap = new EventSource(URL);
 var auto_flag = 1;
+
+var execute_action;
+
+
+var isClawOpen = false; //Check if we can just get feedback for this; then just use movement complete
+var clawOpCount = 0; 
+var clawOpenTime = 25; //Counted Hard Coded Loops
+var clawCloseTime = 17; //Counted Hard Coded Loops
+var opIntervalTime = 200; //Time in ms
+var right_area = 30;
+var left_area = -60;
+
+var arm_cmd = new armData; //THE MAIN ONE SENT TO BE EXECUTED 
+var arm_target = new armData; //THE DESIRED POSITION
+var arm_data = new armData; //THE ACTUAL POSITION
+var default_position = new armData; //THE RESET POSITION
+var arm_manual = new armData; //UI POSITION
+var arm_operations = null;
 
 var min =
 {
@@ -200,17 +218,17 @@ function sendData(value)
 	oReq.send();
 }
 
-// setInterval(function(){
-// 	//console.log(global_data.Object);
-//     format = JSON.parse(global_data);
-//     //console.log(format);
-//     //console.log("global voice " + global_voice);
-//     if(format.Object == "WaterBottle")
-//     {
-//     	//console.log("object found");
-//     	AutoArm();
-//     }
-// }, 1000);
+setInterval(function(){
+	//console.log(global_data.Object);
+    format = JSON.parse(global_data);
+    //console.log(format);
+    //console.log("global voice " + global_voice);
+    if(format.Object == "WaterBottle")
+    {
+    	//console.log("object found");
+    	AutoArm();
+    }
+}, 1000);
 
 function AutoArm()
 {
@@ -470,15 +488,161 @@ function WaterBottle_30()
 	}, 20000);
 }
 
-var execute_action;
+function WaterBottle()
+{
+	var shoulder_value_1 = 80;
+	var shoulder_value_2 = 50;
+	var elbow_value_1 = 45;
+	var elbow_value_2 = 45;
+	console.log("Arm Start");
+	setTimeout(function(){
+		console.log("Initial");
+		arm_data.read_shoulder = shoulder_value_1;
+		arm_data.read_elbow = elbow_value_1;
+		arm_data.read_claw_motion = 0; 
+		sendData(arm_data);
+	}, 1);
 
-var isClawOpen = false; //Check if we can just get feedback for this; then just use movement complete
-var clawOpCount = 0; 
-var clawOpenTime = 25; //Counted Hard Coded Loops
-var clawCloseTime = 17; //Counted Hard Coded Loops
-var opIntervalTime = 200; //Time in ms
-var right_area = 30;
-var left_area = -60;
+		setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 400);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 600);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 800);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1000);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1400);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1600);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 1800);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2000);
+
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2400);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2400);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2600);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 2800);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3000);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3200);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3400);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3600);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 3800);
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4000);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4200);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4400);
+
+	setTimeout(function(){
+
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 4600);
+}
 
 class armData {
 	constructor()
@@ -497,14 +661,6 @@ class armData {
 	}
 }
 
-var arm_cmd = new armData; //THE MAIN ONE SENT TO BE EXECUTED 
-var arm_target = new armData; //THE DESIRED POSITION
-var arm_data = new armData; //THE ACTUAL POSITION
-var default_position = new armData; //THE RESET POSITION
-var arm_manual = new armData; //UI POSITION
-
-
-var arm_operations = null;
 function opPickUp()
 {
 	if(arm_operations == null)
