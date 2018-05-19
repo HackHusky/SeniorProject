@@ -314,7 +314,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             {
                 fp = fopen("data.txt", "w+");
                 if(fp == NULL){printf("FILE FUCKED \n");}
-                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f%\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\,\"Height_Water:\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f%\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\,\"Height_Tennis:\":\"%.1f\"}\n", 
+                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\",\"Height_Water\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f%\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\",\"Height_Tennis\":\"%.1f\"}\n", 
                     names[0], water_prob, water_dist, water_angle, water_height_offset, names[1], tennis_prob, tennis_dist, tennis_angle, tennis_height_offset);
                 fflush(fp);
                 fclose(fp);
@@ -461,19 +461,35 @@ void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, f
             cvPutText(show_img, names[class], pt_text, &font, black_color);
             flag_cv=1;
         }
-        // else if(flag_cv == 0 )
-        // {
-        //     fp = fopen("data.txt", "w+");
-        //     if(fp == NULL){printf("FILE FUCKED \n");}
-        //     fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\",,\"Height\":\"NULL\"}\n");
-        //     fclose(fp);
-        // }
+        else if(flag_cv == 0 )
+        {
+            // fp = fopen("data.txt", "w+");
+            // if(fp == NULL){printf("FILE FUCKED \n");}
+            // fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\",,\"Height\":\"NULL\"}\n");
+            // fclose(fp);
+            tennis_distance_raw=0;
+            tennis_prob=0;
+            tennis_dist=0;
+            tennis_angle=-1;
+            tennis_height_offset=0;
+            water_prob=0;
+            water_dist=0;
+            water_angle=-1;
+            water_height_offset=0;
+            fp = fopen("data.txt", "w+");
+                if(fp == NULL){printf("FILE FUCKED \n");}
+                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\",\"Height_Water\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\",\"Height_Tennis\":\"%.1f\"}\n", 
+                names[0], water_prob, water_dist, water_angle, water_height_offset, names[1], tennis_prob, tennis_dist, tennis_angle, tennis_height_offset);
+                fflush(fp);
+                fclose(fp);
+
+        }
         if(i == num-1 && flag_cv == 1)
         {
                 printf("Writing to File \n");
                 fp = fopen("data.txt", "w+");
                 if(fp == NULL){printf("FILE FUCKED \n");}
-                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\,\"Height_Water:\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\,\"Height_Tennis:\":\"%.1f\"}\n", 
+                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\",\"Height_Water\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\",\"Height_Tennis\":\"%.1f\"}\n", 
                 names[0], water_prob, water_dist, water_angle, water_height_offset, names[1], tennis_prob, tennis_dist, tennis_angle, tennis_height_offset);
                 fflush(fp);
                 fclose(fp);

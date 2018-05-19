@@ -221,9 +221,9 @@ var objectData;
 // };
 
 socket.on('data', function(data) {
-    // global_data = data;
+    //global_data = data;
     objectData = JSON.parse(data);
-    // console.log(objectData);
+    console.log(objectData);
 });
 
 
@@ -236,17 +236,17 @@ function sendData(value)
 	oReq.send();
 }
 
-setInterval(function(){
-	//console.log(global_data.Object);
-    format = JSON.parse(global_data);
-    //console.log(format);
-    //console.log("global voice " + global_voice);
-    if(format.Object == "WaterBottle")
-    {
-    	//console.log("object found");
-    	AutoArm();
-    }
-}, 1000);
+// setInterval(function(){
+// 	//console.log(global_data.Object);
+//     format = JSON.parse(global_data);
+//     //console.log(format);
+//     //console.log("global voice " + global_voice);
+//     if(format.Object == "WaterBottle")
+//     {
+//     	//console.log("object found");
+//     	AutoArm();
+//     }
+// }, 1000);
 
 function AutoArm()
 {
