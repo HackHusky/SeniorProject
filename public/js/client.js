@@ -669,8 +669,9 @@ function opPickUp()
 		arm_operations = 'open_claw';
 		if(objTarget == "WATERBOTTLE" || objTarget == "WATER BOTTLE")
 		{
-			if(objectData.Object_Confidence_Water)
+			if(objectData.Object_Confidence_Water > 0 )
 			{
+				console.log(objectData.Object_Confidence_Water);
 				arm_target.base = objectData.Angle_Water;
 				arm_target.shoulder = getShoulder(objectData.Distance_Water, objectData.Height_Water, (arm_target.elbow * (Math.PI / 180)));
 				arm_target.elbow = getElbow(objectData.Distance_Water, objectData.Height_Water);
@@ -686,7 +687,7 @@ function opPickUp()
 		}
 		if(objTarget == "TENNISBALL" || objTarget == "TENNIS BALL" || objTarget == "BALL")
 		{
-			if(objectData.Object_Confidence_Tennis)
+			if(objectData.Object_Confidence_Tennis > 0)
 			{
 				arm_target.base = objectData.Angle_Water;
 				arm_target.shoulder = getShoulder(objectData.Distance_Tennis, objectData.Height_Tennis, (arm_target.elbow * (Math.PI / 180)));
