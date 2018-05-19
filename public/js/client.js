@@ -470,10 +470,6 @@ function WaterBottle_30()
 	}, 20000);
 }
 
-
-/***************************
- 	WaterBottle Execution
- **************************/
 var execute_action;
 
 var isClawOpen = false; //Check if we can just get feedback for this; then just use movement complete
