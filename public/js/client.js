@@ -481,6 +481,8 @@ var clawOpCount = 0;
 var clawOpenTime = 25; //Counted Hard Coded Loops
 var clawCloseTime = 17; //Counted Hard Coded Loops
 var opIntervalTime = 200; //Time in ms
+var right_area = 30;
+var left_area = -60;
 
 class armData {
 	constructor()
@@ -637,6 +639,12 @@ function executeCommand()
 	{
 		switch(cmdAction)
 		{
+			case 'DROP':
+			case 'DROP LEFT':
+			case 'DROP RIGHT':
+				execute_action = setInterval(opDrop, opIntervalTime);
+				createFeedbackMsg('Action Execution Started: Operation Pick Up.');
+				break;
 			case 'GRAB':
 			case 'PICKUP':
 			case 'PICK UP':
@@ -741,3 +749,117 @@ function getShoulder(height)
 	return default_position.shoulder;
 }
 
+function opDrop()
+{
+	if(arm_operations == null)
+	{
+		arm_operations = 'move_into_position';
+		if(cmdAction == "DROP")
+		{
+			arm_target.base = default_position.base;
+			arm_target.shoulder = default_position.shoulder;
+			arm_target.elbow = default_position.elbow;
+			arm_target.wrist = default_position.wrist;
+			arm_target.wrist_rot = default_position.wrist_rot;
+		}
+		else if(cmdAction == "DROP LEFT")
+		{
+			arm_target.base = left_area;
+			arm_target.shoulder = default_position.shoulder;
+			arm_target.elbow = default_position.elbow;
+			arm_target.wrist = default_position.wrist;
+			arm_target.wrist_rot = default_position.wrist_rot;
+		}
+		else if(cmdAction == "DROP RIGHT")
+		{
+			arm_target.base = right_area;
+			arm_target.shoulder = default_position.shoulder;
+			arm_target.elbow = default_position.elbow;
+			arm_target.wrist = default_position.wrist;
+			arm_target.wrist_rot = default_position.wrist_rot;
+		}
+		else 
+		{
+			arm_operations = 'exit';
+			console.log("ERROR: INCORRECT COMMAND");
+		}
+		
+	}
+
+	switch(arm_operations)
+	{
+		case 'open_claw':
+			if(!isClawOpen)
+			{
+				arm_cmd.claw_motion = 1;
+				clawOpCount++;
+				
+				if(clawOpCount > clawOpenTime)
+				{
+					arm_operations = 'close_claw';
+					clawOpCount = 0;
+					isClawOpen = true;
+					arm_cmd.claw_motion = 0;
+				}
+			}
+			else
+			{
+				arm_operations = 'close_claw';
+			}
+			break;
+
+		case 'move_into_position':
+			arm_cmd.base = arm_target.base;
+			arm_cmd.shoulder = arm_target.shoulder;
+			arm_cmd.elbow = arm_target.elbow;
+			arm_cmd.wrist = arm_target.wrist;
+			arm_cmd.wrist_rot = arm_target.wrist_rot;
+
+			if(movementComplete(arm_target))
+			{
+				arm_operations = 'open_claw';
+			}
+			break;
+
+		case 'close_claw':
+			if(isClawOpen)
+			{
+				arm_cmd.claw_motion = 2;
+				clawOpCount++;
+				if(clawOpCount <= clawCloseTime)
+				{
+					arm_operations = 'move_into_default';
+					clawOpCount = 0;
+					isClawOpen = false;
+					arm_cmd.claw_motion = 0;
+				}
+			}
+			else
+			{
+				arm_operations = 'move_into_default';
+			}
+			break;
+
+		case 'move_into_default':
+			arm_cmd.base = default_position.base;
+			arm_cmd.shoulder = default_position.shoulder;
+			arm_cmd.elbow = default_position.elbow;
+			arm_cmd.wrist = default_position.wrist;
+			arm_cmd.wrist_rot = default_position.wrist_rot;
+
+			if(movementComplete(default_position))
+			{
+				arm_operations = 'exit';
+				createFeedbackMsg('Operation Drop Complete!');
+			}
+			break;
+
+		case 'exit':
+		default:
+			clearInterval(execute_action);
+			createFeedbackMsg('Action Execution Complete & Cleared.');
+			arm_operations = null;
+			break;
+	}
+	sendData(arm_cmd);
+}
