@@ -3,11 +3,11 @@ var socket = io.connect('http://localhost:5000');
 
 var arm_data = {
 	read_cam_id : 0,
-    read_cam_shoulder : -45,
+    read_cam_shoulder :0,
     read_cam_elbow : 0,
     read_gimbal : 0,
     read_base : 0,
-    read_shoulder : 0,
+    read_shoulder : 80,
     read_elbow : 101,
     read_wrist : 0,
     read_wrist_rot : 100,
@@ -67,17 +67,17 @@ function sendData(value)
 	oReq.send();
 }
 
-// setInterval(function(){
-// 	//console.log(global_data.Object);
-//     format = JSON.parse(global_data);
-//     //console.log(format);
-//     //console.log("global voice " + global_voice);
-//     if(format.Object == "WaterBottle")
-//     {
-//     	//console.log("object found");
-//     	AutoArm();
-//     }
-// }, 1000);
+setInterval(function(){
+	//console.log(global_data.Object);
+    format = JSON.parse(global_data);
+    //console.log(format);
+    //console.log("global voice " + global_voice);
+    if(format.Object == "WaterBottle")
+    {
+    	//console.log("object found");
+    	AutoArm();
+    }
+}, 1000);
 
 function AutoArm()
 {
@@ -340,9 +340,9 @@ function WaterBottle_30()
 
 function WaterBottle()
 {
-	var shoulder_value_1 = 110;
-	var shoulder_value_2 = 80;
-	var elbow_value_1 = 40;
+	var shoulder_value_1 = 80;
+	var shoulder_value_2 = 50;
+	var elbow_value_1 = 45;
 	var elbow_value_2 = 45;
 	console.log("Arm Start");
 	setTimeout(function(){
@@ -502,9 +502,58 @@ function WaterBottle()
 
 	setTimeout(function(){
 		console.log("Shoulder");
-		arm_data.read_claw_motion =  0;
+		arm_data.read_claw_motion =  2;
 		sendData(arm_data);
-	}, 5000);
+	}, 5200);
+
+	setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 5400);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 5600);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 5800);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 6000);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 6200);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 6400);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 6600);
+
+setTimeout(function(){
+		console.log("Shoulder");
+		arm_data.read_claw_motion =  2;
+		sendData(arm_data);
+	}, 6800);
+
 
 
 	setTimeout(function(){
@@ -513,7 +562,7 @@ function WaterBottle()
 		arm_data.read_elbow = elbow_value_1;
 		arm_data.read_claw_motion = 0; 
 		sendData(arm_data);
-	}, 6000);
+	}, 7000);
 			
 
 	setTimeout(function(){

@@ -186,6 +186,15 @@ image **load_alphabet()
 void draw_detections(image im, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
 {
     int i;
+    float tennis_prob;
+    float tennis_dist;
+    float tennis_angle;
+    float tennis_height_offset;
+    float tennis_distance_raw;
+    float water_prob;
+    float water_dist;
+    float water_angle;
+    float water_height_offset;
     FILE *fp;
     printf("CALL\n");
     printf("NUM : %i \n",num);
@@ -193,7 +202,7 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
         int class = max_index(probs[i], classes);
         float prob = probs[i][class];
         if(prob > thresh){
-            //printf("%i \n",thresh);
+            printf("%i \n",i);
             //// for comparison with OpenCV version of DNN Darknet Yolo v2
             //printf("\n %f, %f, %f, %f, ", boxes[i].x, boxes[i].y, boxes[i].w, boxes[i].h);
             // int k;
@@ -235,34 +244,56 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             if(top < 0) top = 0;
             if(bot > im.h-1) bot = im.h-1;
 
+            float height_offset = ((im.h- (-1*(0 - top)))/10)*.3; 
+
             draw_box_width(im, left, top, right, bot, width, red, green, blue);
             printf("left %i right %i \n", left, right );
             float distance = (right - left);
-            distance = -.17*distance+64;
+            tennis_distance_raw = distance;
+            distance = (-.17*distance+64)*1.34;
             printf("distance : :%.1fcm,  width: %i , height: %i , \n", distance, im.w, im.h);
 
+            printf("height offset : %f \n", height_offset );
 
             float angle = (width/2)-((right-left)/2);
 
-            if(((right-left)+left) - (width/2)<90)
+
+            if(((right-left)+left) - (im.w/2)<90)
             {
                 angle = abs(angle)/distance;
                 angle = atan(angle)*(180.0 / PI);
+                angle += angle;
             }
             else
             {
                 angle = abs(angle)/distance;
                 angle = atan(angle)*(180.0 / PI);
-                angle += 90;
+                //angle += 90;
             }
 
-            printf("Angle %.1f \n", angle );
+            if(strcmp(names[class], "TennisBall")==0){
+                //printf("get call dude\n");
+                //printf("Tennis D: %f \n", tennis_distance_raw);
+                tennis_distance_raw = tennis_distance_raw*.125;
+                tennis_prob = prob*100;
+                tennis_dist = tennis_distance_raw;
+                tennis_angle= angle;
+                tennis_height_offset = height_offset;
 
-            fp = fopen("data.txt", "w+");
-            if(fp == NULL){printf("FILE FUCKED \n");}
-            fprintf(fp, "{\"Object\":\"%s\",\"Object_Confidence\":\"%.0f%%\",\"Distance\":\"%.1f\",\"Angle\":\"%.1f\"}\n", names[class], prob*100, distance, angle);
-            fflush(fp);
-            fclose(fp);
+            }
+            if(strcmp(names[class], "WaterBottle")==0)
+            {   
+                water_prob = prob*100;
+                water_dist = distance;
+                water_angle= angle;
+                water_height_offset = height_offset;
+            }
+            printf("Angle %.1f \n", angle );
+            // fp = fopen("data.txt", "w+");
+            // if(fp == NULL){printf("FILE FUCKED \n");}
+            // fprintf(fp, "{\"Object\":\"%s\",\"Object_Confidence\":\"%.0f%\",\"Distance\":\"%.1f\",\"Angle\":\"%.1f\,\"Height:\":\"%.1f\"}\n", names[class], prob*100, distance, angle, height_offset);
+            // fflush(fp);
+            // fclose(fp);
 
             if (alphabet) {
                 image label = get_label(alphabet, names[class], (im.h*.03)/10);
@@ -270,14 +301,24 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
             }
             flag = 1;
         }
-        else if(flag == 0 )
-        {
-            fp = fopen("data.txt", "w+");
-            if(fp == NULL){printf("FILE FUCKED \n");}
-            fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\"}\n");
-            fflush(fp);
-            fclose(fp);
-        }
+        // else if(flag == 0 )
+        // {
+        //     fp = fopen("data.txt", "w+");
+        //     if(fp == NULL){printf("FILE FUCKED \n");}
+        //     fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\",\"Height\":\"NULL\"}\n");
+        //     fflush(fp);
+        //     fclose(fp);
+        // }
+
+         if(i == num-1 && flag == 1)
+            {
+                fp = fopen("data.txt", "w+");
+                if(fp == NULL){printf("FILE FUCKED \n");}
+                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f%\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\,\"Height_Water:\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f%\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\,\"Height_Tennis:\":\"%.1f\"}\n", 
+                    names[0], water_prob, water_dist, water_angle, water_height_offset, names[1], tennis_prob, tennis_dist, tennis_angle, tennis_height_offset);
+                fflush(fp);
+                fclose(fp);
+            }
         
     }
     // else
@@ -294,6 +335,15 @@ void draw_detections(image im, int num, float thresh, box *boxes, float **probs,
 void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, float **probs, char **names, image **alphabet, int classes)
 {   
     int flag_cv = 0;
+    float tennis_distance_raw;
+    float tennis_prob;
+    float tennis_dist;
+    float tennis_angle;
+    float tennis_height_offset;
+    float water_prob;
+    float water_dist;
+    float water_angle;
+    float water_height_offset;
     printf("CV CALL\n");
     int i;
     FILE *fp;
@@ -333,23 +383,27 @@ void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, f
             if (top < 0) top = 0;
             if (bot > show_img->height - 1) bot = show_img->height - 1;
 
-               printf("left %i right %i \n", left, right );
+            printf("top %i right %i \n", top, right );
             float distance = (right - left);
-            distance = -.17*distance+64;
+            tennis_distance_raw = distance;
+            distance = (-.17*distance+64)*1.34;
 
+
+            float height = ((show_img->height - (-1*(0 - top)))/10)*.3;
 
             float angle = (width/2)-((right-left)/2);
 
-            if(((right-left)+left) - (width/2)<90)
+            if(((right-left)+left) - (show_img->width/2)<90)
             {
                 angle = abs(angle)/distance;
                 angle = atan(angle)*(180.0 / PI);
+                angle += 90;
+
             }
             else
             {
                 angle = abs(angle)/distance;
                 angle = atan(angle)*(180.0 / PI);
-                angle += 90;
             }
 
             printf("Angle %.1f \n", angle );
@@ -371,11 +425,30 @@ void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, f
             color.val[1] = green * 256;
             color.val[2] = blue * 256;
 
-            fp = fopen("data.txt", "w+");
-            if(fp == NULL){printf("FILE FUCKED \n");}
-            fprintf(fp, "{\"Object\":\"%s\",\"Object_Confidence\":\"%.0f%%\",\"Distance\":\"%.1f\",\"Angle\":\"%.1f\"}\n", names[class], prob*100, distance, angle);
-            fflush(fp);
-            fclose(fp);
+            if(strcmp(names[class], "TennisBall")==0){
+
+                tennis_distance_raw = tennis_distance_raw*.125;
+                tennis_prob = prob*100;
+                tennis_dist = distance;
+                tennis_angle= angle;
+                tennis_height_offset = height;
+
+            }
+            if(strcmp(names[class], "WaterBottle")==0)
+            {   
+                water_prob = prob*100;
+                water_dist = distance;
+                water_angle= angle;
+                water_height_offset = height;
+            }
+
+            // fp = fopen("data.txt", "w+");
+            // if(fp == NULL){printf("FILE FUCKED \n");}
+            // fprintf(fp, "{\"Object\":\"%s\",\"Object_Confidence\":\"%.0f%%\",\"Distance\":\"%.1f\",\"Angle\":\"%.1f\",\"Height:\":\"%.1f\"}\n", names[class], prob*100, distance, angle, height);
+            // fflush(fp);
+            // fclose(fp);
+            //streaming stuff
+
 
             cvRectangle(show_img, pt1, pt2, color, width, 8, 0);
             //printf("left=%d, right=%d, top=%d, bottom=%d, obj_id=%d, obj=%s \n", left, right, top, bot, class, names[class]);
@@ -388,14 +461,24 @@ void draw_detections_cv(IplImage* show_img, int num, float thresh, box *boxes, f
             cvPutText(show_img, names[class], pt_text, &font, black_color);
             flag_cv=1;
         }
-        else if(flag_cv == 0 )
+        // else if(flag_cv == 0 )
+        // {
+        //     fp = fopen("data.txt", "w+");
+        //     if(fp == NULL){printf("FILE FUCKED \n");}
+        //     fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\",,\"Height\":\"NULL\"}\n");
+        //     fclose(fp);
+        // }
+        if(i == num-1 && flag_cv == 1)
         {
-            fp = fopen("data.txt", "w+");
-            if(fp == NULL){printf("FILE FUCKED \n");}
-            fprintf(fp, "{\"Object\":\"NONE\",\"Object_Confidence\":\"0\",\"Distance\":\"NULL\",\"Angle\":\"NULL\"}\n");
-            fflush(fp);
-            fclose(fp);
+                printf("Writing to File \n");
+                fp = fopen("data.txt", "w+");
+                if(fp == NULL){printf("FILE FUCKED \n");}
+                fprintf(fp, "{\"Object_Water\":\"%s\",\"Object_Confidence_Water\":\"%.0f\",\"Distance_Water\":\"%.1f\",\"Angle_Water\":\"%.1f\,\"Height_Water:\":\"%.1f\",\"Object_Tennis\":\"%s\",\"Object_Confidence_Tennis\":\"%.0f\",\"Distance_Tennis\":\"%.1f\",\"Angle_Tennis\":\"%.1f\,\"Height_Tennis:\":\"%.1f\"}\n", 
+                names[0], water_prob, water_dist, water_angle, water_height_offset, names[1], tennis_prob, tennis_dist, tennis_angle, tennis_height_offset);
+                fflush(fp);
+                fclose(fp);
         }
+    
     }
 }
 #endif
