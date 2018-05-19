@@ -6,14 +6,13 @@
 		<meta http-equiv = 'Content-Language' content = 'en'/>
 		<link rel="shortcut icon" type="image/x-icon" href="denko.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<script src="https://maps.googleapis.com/maps/api/js"></script>
-		<script src="js/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+
       <style> 
         footer {
           position: absolute;
           bottom: 0px;
           width: 100%;
+          z-index: -1;
         }
 
         footer p {
@@ -34,11 +33,12 @@
           line-height: 3rem;
           padding: 10px;
           font-size: 3vw !important;
+          margin: 5px 0;
         }
 
         h3 {
           padding: 0px;
-          margin-left: 10px;
+          margin: 10px 0px 10px 10px;
           text-align: left;
         /*  color: #0D364F;*/
           display: 5;
@@ -60,9 +60,10 @@
         .container {
           margin: 0 auto;
           display: grid;
-          height: 75vh;
-          grid-template-rows: auto 3fr auto 1fr;
-          grid-template-columns: 3fr 3fr 3fr 3fr 6fr;
+          height: 85vh;
+          width: 100vw;
+          grid-template-rows: auto 2fr 2fr auto 1fr;
+          grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 6fr;
           grid-gap: 5px;
         }
 
@@ -76,35 +77,126 @@
           grid-row-start: 1;
           grid-column-start: 1;
           grid-row-end: span 2;
-          grid-column-end: span 4;
+          grid-column-end: span 6;
         }
 
-        .voice-title {
+        .arm-panel-title {
+          grid-row-start: 1;
+          grid-column-start: 1;
+          grid-row-end: span 1;
+          grid-column-end: span 6;
+        }
+
+        .base {
+          grid-row-start: 2;
+          grid-column-start: 1;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .shoulder {
+          grid-row-start: 2;
+          grid-column-start: 2;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .elbow {
+          grid-row-start: 2;
+          grid-column-start: 3;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .wrist {
+          grid-row-start: 2;
+          grid-column-start: 4;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .wrist-rot {
+          grid-row-start: 2;
+          grid-column-start: 5;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .claw {
+          grid-row-start: 2;
+          grid-column-start: 6;
+          grid-row-end: span 1;
+          grid-column-end: span 1;          
+        }
+
+        .base-recieved {
           grid-row-start: 3;
           grid-column-start: 1;
           grid-row-end: span 1;
-          grid-column-end: span 4;
+          grid-column-end: span 1;
         }
 
-        .voice-section {
+        .shoulder-recieved {
+          grid-row-start: 3;
+          grid-column-start: 2;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .elbow-recieved {
+          grid-row-start: 3;
+          grid-column-start: 3;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .wrist-recieved {
+          grid-row-start: 3;
+          grid-column-start: 4;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .wrist-rot-recieved {
+          grid-row-start: 3;
+          grid-column-start: 5;
+          grid-row-end: span 1;
+          grid-column-end: span 1;
+        }
+
+        .claw-recieved {
+          grid-row-start: 3;
+          grid-column-start: 6;
+          grid-row-end: span 1;
+          grid-column-end: span 1;          
+        }       
+
+        .voice-title {
           grid-row-start: 4;
           grid-column-start: 1;
           grid-row-end: span 1;
-          grid-column-end: span 4;
+          grid-column-end: span 6;
+        }
+
+        .voice-section {
+          grid-row-start: 5;
+          grid-column-start: 1;
+          grid-row-end: span 1;
+          grid-column-end: span 6;
           padding: 5px;
         }
 
         .feedback-title {
           grid-row-start: 1;
-          grid-column-start: 5;
+          grid-column-start: 7;
           grid-column-end: span 1;
           grid-row-end: span 1;
         }
 
         .output-panel {
           grid-row-start: 2;
-          grid-column-start: 5;
-          grid-row-end: span 1;
+          grid-column-start: 7;
+          grid-row-end: span 2;
           grid-column-end: span 1;
           overflow: auto;
         }
@@ -119,15 +211,15 @@
         }
 
         .sent-cmd-title {
-          grid-row-start: 3;
-          grid-column-start: 5;
+          grid-row-start: 4;
+          grid-column-start: 7;
           grid-row-end: span 1;
           grid-column-end: span 1;
         }
 
         .cmd-box {
-          grid-row-start: 4;
-          grid-column-start: 5;
+          grid-row-start: 5;
+          grid-column-start: 7;
           grid-row-end: span 1;
           grid-column-end: span 1;
           overflow: auto;
@@ -194,7 +286,21 @@
           overflow-wrap: break-word;
           overflow-x: hidden;
         }
+        
+        #claw-torque {
+          padding: 0;
+          margin: 0;
+          width: 30px;
+          border: none;
+        }
 
+        #claw-torque-recieved {
+          padding: 0;
+          margin: 0;
+          width: 30px;
+          border: none;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 50px 25px;
@@ -203,7 +309,8 @@
             button {
                 margin-bottom: 10px;
             }
-        } 
+        }
+
       </style>
 	</head>
 
@@ -216,9 +323,67 @@
 		<div class="container">
 			<div class="video-section" id="video-box">
 				<!-- <video autoplay="true" id="video-stream" controls>
-				</video> -->
-			</div>
-			<div class="voice-title section-title">
+        </video> -->
+      </div>
+        
+        <!-- Arm Control Panel -->
+        <div class="arm-panel-title section-title">
+          <h3>Arm Manaul Control Panel</h3>
+        </div>
+        <div class="base" style="text-align: center;">
+            Base<br>
+            <input type="text" value="0" class="dial" id="base">
+        </div>
+        <div class="shoulder" style="text-align: center;">
+            Shoulder<br>
+            <input type="text" value="0" class="dial" id="shoulder">
+        </div>
+        <div class="elbow" style="text-align: center;">
+            Elbow<br>
+            <input type="text" value="0" class="dial" id="elbow">
+        </div>
+        <div class="wrist" style="text-align: center;">
+            Wrist<br>
+            <input type="text" value="0" class="dial" id="wrist">
+        </div>
+        <div class="wrist-rot" style="text-align: center;">
+            Wrist rotation<br>
+            <input type="text" value="0" class="dial" id="wrist-rotation">
+        </div>
+        <div class="claw" style="text-align: center;">
+            Claw<br>
+            <button class="btn btn-primary" onmousedown="moveClaw(2)" onmouseup="moveClaw(0)" title="Open Claw">Open</button>
+            <button class="btn btn-primary" onmousedown="moveClaw(1)" onmouseup="moveClaw(0)" title="Close Claw">Close</button>
+            <br><br>Claw Torque: <input type="text" id="claw-torque" value="" onchange="updateClawTorque(this.value);">
+            <input type="range" min="0" max="100" value="0" onchange="updateClawTorque(this.value);" data-show-value="true">
+        </div>
+
+        <!-- Arm Output Section -->
+        <div class="base-recieved" style="text-align: center;">
+            Base<br>
+            <input type="text" value="0" class="dial" id="base-recieve">
+        </div>
+        <div class="shoulder-recieved" style="text-align: center;">
+            Shoulder<br>
+            <input type="text" value="0" class="dial" id="shoulder-recieve">
+        </div>
+        <div class="elbow-recieved" style="text-align: center;">
+            Elbow<br>
+            <input type="text" value="0" class="dial" id="elbow-recieve">
+        </div>
+        <div class="wrist-recieved" style="text-align: center;">
+            Wrist<br>
+            <input type="text" value="0" class="dial" id="wrist-recieve">
+        </div>
+        <div class="wrist-rot-recieved" style="text-align: center;">
+            Wrist rotation<br>
+            <input type="text" value="0" class="dial" id="wrist-rotation-recieve">
+        </div>
+        <div class="claw-recieved" style="text-align: center;">
+            <br><br>Claw Torque: <input type="text" id="claw-torque-recieved" value="N/A"">
+        </div>
+			
+      <div class="voice-title section-title">
         <h3>Command Input</h3>
       </div>
 
@@ -269,8 +434,12 @@
 
 		<!-- JavaScripts to Run -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.10.0"> </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
 
     <script src="js/script.js"></script>
     <script src="js/client.js"></script>

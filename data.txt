@@ -1,0 +1,1 @@
+{"Object":"WaterBottle","Object_Confidence":"61%","Distance":"25.2","Angle":"167.1"}

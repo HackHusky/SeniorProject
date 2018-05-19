@@ -11,6 +11,23 @@ var usrCmdTag = 'cmd-';
 var feedbackTag = 'log-';
 var global_voice = '';
 
+var objTarget = '';
+var cmdAction = '';
+
+const TargetTable = 
+[
+  "water bottle", 
+  "waterbottle",
+  "none"
+];
+
+const actionTable = 
+[
+  "grab", 
+  "pick up", 
+  "idle"
+];
+
 /*---------------------
       Video Feed 
 ----------------------*/
@@ -247,7 +264,7 @@ function parseCommand()
   {
     if(noteContent.toLowerCase().includes(TargetTable[key]))
     {
-      objTarget = TargetTable[key];
+      objTarget = TargetTable[key].toUpperCase();
       createFeedbackMsg('Object target set to: ' + objTarget);
       console.log("TargetTable update = " + objTarget);
     }
@@ -257,7 +274,7 @@ function parseCommand()
   {
     if(noteContent.toLowerCase().includes(actionTable[key]))
     {
-      cmdAction = actionTable[key];
+      cmdAction = actionTable[key].toUpperCase();
       createFeedbackMsg('Command Action set to: ' + cmdAction);
       console.log("actionTable update = " + cmdAction);
     }
