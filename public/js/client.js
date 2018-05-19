@@ -15,6 +15,7 @@ var arm_data = {
     read_claw_torque : 100,
     timestamp : 0
 };
+
 var buffer;
 var global_data;
 var format; 
@@ -38,6 +39,23 @@ var clawCloseTime = 17; //Counted Hard Coded Loops
 var opIntervalTime = 200; //Time in ms
 var right_area = 30;
 var left_area = -60;
+
+class armData {
+	constructor()
+	{
+		this.base  = -30;
+		this.shoulder = 60;
+		this.elbow = -80;
+		this.wrist = 6;
+		this.wrist_rot = 0;
+		this.cam_id = 0;
+		this.cam_shoulder = 0;
+		this.gimbal = 0;
+		this.claw_motion = 0;
+		this.claw_torque = 0;
+		this.timestamp = 0;
+	}
+}
 
 var arm_cmd = new armData; //THE MAIN ONE SENT TO BE EXECUTED 
 var arm_target = new armData; //THE DESIRED POSITION
@@ -644,23 +662,6 @@ function WaterBottle()
 	}, 4600);
 }
 
-class armData {
-	constructor()
-	{
-		this.base  = -30;
-		this.shoulder = 60;
-		this.elbow = -80;
-		this.wrist = 6;
-		this.wrist_rot = 0;
-		this.cam_id = 0;
-		this.cam_shoulder = 0;
-		this.gimbal = 0;
-		this.claw_motion = 0;
-		this.claw_torque = 0;
-		this.timestamp = 0;
-	}
-}
-
 function opPickUp()
 {
 	if(arm_operations == null)
@@ -671,8 +672,8 @@ function opPickUp()
 			if(objectData.Object_Confidence_Water)
 			{
 				arm_target.base = objectData.Angle_Water;
-				arm_target.shoulder = getShoulder(objectData.Height_Water);
-				arm_target.elbow = getElbow(objectData.Distance_Water);
+				arm_target.shoulder = getShoulder(objectData.Distance_Water, objectData.Height_Water, (arm_target.elbow * (Math.PI / 180)));
+				arm_target.elbow = getElbow(objectData.Distance_Water, objectData.Height_Water);
 				// arm_target.wrist = getWrist();
 				console.log("Object Target of Op: " + objTarget);
 			}
@@ -688,8 +689,8 @@ function opPickUp()
 			if(objectData.Object_Confidence_Tennis)
 			{
 				arm_target.base = objectData.Angle_Water;
-				arm_target.shoulder = getShoulder(objectData.Height_Tennis);
-				arm_target.elbow = getElbow(objectData.Distance_Tennis);
+				arm_target.shoulder = getShoulder(objectData.Distance_Tennis, objectData.Height_Tennis, (arm_target.elbow * (Math.PI / 180)));
+				arm_target.elbow = getElbow(objectData.Distance_Tennis, objectData.Height_Tennis);
 				// arm_target.wrist = getWrist();			
 				console.log("Object Target of Op: " + objTarget);
 			}
@@ -891,14 +892,16 @@ function renderData()
     document.getElementById('claw-torque-recieved').value=arm_data.claw_torque;
 }
 
-function getElbow(distance)
+function getElbow(distance, height)
 {
-	return default_position.elbow;
+    arm_target.elbow = -((Math.acos((Math.pow(distance,2) + Math.pow(height,2) - Math.pow(35.56,2) - Math.pow(41.148,2)) / (2 * 35.56 * 41.148)))/ (Math.PI / 180));
+    return arm_target.elbow;
 }
 
-function getShoulder(height)
+function getShoulder(distance, height, e_angle)
 {
-	return default_position.shoulder;
+    arm_target.shoulder = Math.atan(height/distance) + Math.atan((41.148 * Math.sin(e_angle)) / (35.56 + 41.148 * Math.cos(e_angle)));
+    return arm_target.shoulder;
 }
 
 function opDrop()
