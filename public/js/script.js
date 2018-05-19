@@ -1,6 +1,7 @@
 /*---------------------
     Global Variables
 ----------------------*/
+var firstRun = true;
 var voiceTextArea = $('#voice-textarea');
 var instructions = $('#recording-instructions');
 var usrCmdListLocation = $('ul#usr-cmd-msg');
@@ -13,18 +14,24 @@ var global_voice = '';
 
 var objTarget = '';
 var cmdAction = '';
+var targetSuccess = false;
+var actionSuccess = false;
 
 const TargetTable = 
 [
   "water bottle", 
   "waterbottle",
+  "tennisball",
+  "tennis ball",
+  "ball",
   "none"
 ];
 
 const actionTable = 
 [
   "grab", 
-  "pick up", 
+  "pick up",
+  "pickup", 
   "idle"
 ];
 
@@ -132,12 +139,14 @@ $('#send-cmd-btn').on('click', function(e) {
   }
   else 
   {
-    saveNote(new Date().toLocaleString(), noteContent, usrCmdTag);
-      instructions.text('Command save and sent successfully.');
+      saveNote(new Date().toLocaleString(), noteContent, usrCmdTag);
+      parseCommand();
+      executeCommand();
+      instructions.text('Command saved and sent successfully.');
       global_voice = noteContent;
       noteContent = '';
-      renderOutput(usrCmdTag, usrCmdListLocation);
       voiceTextArea.val('');
+      renderOutput(usrCmdTag, usrCmdListLocation);
   }
 });
 
@@ -267,9 +276,9 @@ function parseCommand()
       objTarget = TargetTable[key].toUpperCase();
       createFeedbackMsg('Object target set to: ' + objTarget);
       console.log("TargetTable update = " + objTarget);
+      targetSuccess = true;
     }
   }
-
   for(const key in actionTable)
   {
     if(noteContent.toLowerCase().includes(actionTable[key]))
@@ -277,6 +286,7 @@ function parseCommand()
       cmdAction = actionTable[key].toUpperCase();
       createFeedbackMsg('Command Action set to: ' + cmdAction);
       console.log("actionTable update = " + cmdAction);
+      actionSuccess = true;
     }
   }
 }
@@ -284,8 +294,6 @@ function parseCommand()
 /*-----------------------------
       Setup Code
 ------------------------------*/
-var firstRun = true;
-
 if(firstRun)
 {
   renderOutput(usrCmdTag, usrCmdListLocation);

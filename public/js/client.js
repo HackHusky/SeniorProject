@@ -15,7 +15,8 @@ var arm_data = {
     read_claw_torque : 100,
     timestamp : 0
 };
-var global_data ; 
+var buffer;
+var global_data;
 var format; 
 var base_position     = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 var shoulder_position = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -24,24 +25,25 @@ var wrist_position    = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 var claw_position     = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 var oReq = new XMLHttpRequest();
 const URL = 'http://192.168.4.1';
+var source_ap = new EventSource(URL);
 var auto_flag = 1;
 
 var min =
 {
-	base: 5,
-	shoulder: 5,
-	elbow: 5,
-	wrist: 5,
-	wrist_rot: 5
+	base: -150,
+	shoulder: 0,
+	elbow: -150,
+	wrist: -130,
+	wrist_rot: 0
 }
 
 var max =
 {
-	base: 180,
+	base: 150,
 	shoulder: 180,
-	elbow: 180,
-	wrist: 180,
-	wrist_rot: 180
+	elbow: 150,
+	wrist: 130,
+	wrist_rot: 360
 }
 
 $(document).ready(function() {
@@ -60,11 +62,11 @@ $(document).ready(function() {
 		auto_flag = 1 ;
 	};
 
-	document.getElementById('StartArm').onclick = function() 
-	{
-		WaterBottle();
+	// document.getElementById('StartArm').onclick = function() 
+	// {
+		// WaterBottle();
 
-	};
+	// };
 
 	//Arm Control Panel Functions
     $("#base").knob({
@@ -119,42 +121,47 @@ $(document).ready(function() {
     });
 
     //Recieved
-    $("#base-recieve").knob({ 
+    $("#base-recieve").knob({
+    	'readOnly':'true', 
     	'width':100,
     	'height':100,
     	'min': min.base,
     	'max': max.base,
     	'fgColor' : '#ED742F'
     });
-    $("#shoulder-recieve").knob({ 
+    $("#shoulder-recieve").knob({
+    	'readOnly':'true', 
     	'width':100,
     	'height':100,
 	   	'min': min.shoulder,
     	'max': max.shoulder,
     	'fgColor' : '#ED742F'
     });
-    $("#elbow-recieve").knob({ 
+    $("#elbow-recieve").knob({
+    	'readOnly':'true', 
     	'width':100,
     	'height':100,
 	   	'min': min.elbow,
     	'max': max.elbow,
     	'fgColor' : '#ED742F'
     });
-    $("#wrist-recieve").knob({ 
+    $("#wrist-recieve").knob({
+    	'readOnly':'true', 
     	'width':100,
     	'height':100,
 	   	'min': min.wrist,
     	'max': max.wrist,
     	'fgColor' : '#ED742F'
     });
-    $("#wrist-rotation-recieve").knob({ 
+    $("#wrist-rotation-recieve").knob({
+    	'readOnly':'true', 
     	'width':100,
     	'height':100,
 	   	'min': min.wrist_rot,
     	'max': max.wrist_rot,
     	'fgColor' : '#ED742F'
     });
-
+    renderData();
 });
 
 function updateClawTorque(val)
@@ -163,10 +170,24 @@ function updateClawTorque(val)
 	arm_cmd.claw_torque = val;
 }
 
+var objectData;
+// {
+// 	"Object_Water":"WaterBottle",
+// 	"Object_Confidence_Water":"86",
+// 	"Distance_Water":"42.7",
+// 	"Angle_Water":"64.6",
+// 	"Height_Water:":"13.5",
+// 	"Object_Tennis":"TennisBall",
+// 	"Object_Confidence_Tennis":"60",
+// 	"Distance_Tennis":"42.6",
+// 	"Angle_Tennis":"87.2",
+// 	"Height_Tennis:":"9.9"
+// };
+
 socket.on('data', function(data) {
-	//console.log("Data coming in ");
-    //console.log(data);
-    global_data = data;
+    // global_data = data;
+    objectData = JSON.parse(data);
+    // console.log(objectData);
 });
 
 
@@ -464,10 +485,10 @@ var opIntervalTime = 200; //Time in ms
 class armData {
 	constructor()
 	{
-		this.base  = 0;
+		this.base  = -30;
 		this.shoulder = 60;
-		this.elbow = 120;
-		this.wrist = 0;
+		this.elbow = -80;
+		this.wrist = 6;
 		this.wrist_rot = 0;
 		this.cam_id = 0;
 		this.cam_shoulder = 0;
@@ -480,20 +501,50 @@ class armData {
 
 var arm_cmd = new armData; //THE MAIN ONE SENT TO BE EXECUTED 
 var arm_target = new armData; //THE DESIRED POSITION
-var arm_data = new armData;
-var default_position = new armData;
+var arm_data = new armData; //THE ACTUAL POSITION
+var default_position = new armData; //THE RESET POSITION
 
 
+var arm_operations = null;
 function opPickUp()
 {
-	if(typeof opPickUp == 'undefined')
+	if(arm_operations == null)
 	{
-		opPickUp.arm_operations = 'open_claw';
-		createFeedbackMsg('Operation Pick Up Stage: Opening Claw...');
-		
-		//Calculate Desired Movement
-		arm_target.shoulder = 80;
-		arm_target.elbow = 40;
+		arm_operations = 'open_claw';
+		if(objTarget == "WATERBOTTLE" || objTarget == "WATER BOTTLE")
+		{
+			if(objectData.Object_Confidence_Water)
+			{
+				arm_target.base = objectData.Angle_Water;
+				arm_target.shoulder = getShoulder(objectData.Height_Water);
+				arm_target.elbow = getElbow(objectData.Distance_Water);
+				// arm_target.wrist = getWrist();
+				console.log("Object Target of Op: " + objTarget);
+			}
+			else
+			{
+				console.log("ABORT OP: OBJECT NOT FOUND");
+				createFeedbackMsg("ABORT OP: OBJECT NOT FOUND");
+				arm_operations == 'exit';
+			}
+		}
+		if(objTarget == "TENNISBALL" || objTarget == "TENNIS BALL" || objTarget == "BALL")
+		{
+			if(objectData.Object_Confidence_Tennis)
+			{
+				arm_target.base = objectData.Angle_Water;
+				arm_target.shoulder = getShoulder(objectData.Height_Tennis);
+				arm_target.elbow = getElbow(objectData.Distance_Tennis);
+				// arm_target.wrist = getWrist();			
+				console.log("Object Target of Op: " + objTarget);
+			}
+			else
+			{
+				console.log("ABORT OP: OBJECT NOT FOUND");
+				createFeedbackMsg("ABORT OP: OBJECT NOT FOUND");
+				arm_operations == 'exit';
+			}
+		}
 	}
 
 	switch(arm_operations)
@@ -531,7 +582,6 @@ function opPickUp()
 			{
 				arm_operations = 'close_claw';
 				createFeedbackMsg('Operation Pick Up Stage: Closing Claw...');
-				create
 			}
 			break;
 
@@ -572,38 +622,43 @@ function opPickUp()
 
 		case 'exit':
 		default:
-			//Do Nothing
 			clearInterval(execute_action);
 			createFeedbackMsg('Action Execution Complete & Cleared.');
-			arm_operations = 'open_claw';
+			arm_operations = null;
 			break;
 	}
 	sendData(arm_cmd);
 }
 
-function executeArmActions()
+function executeCommand()
 {
-	switch(cmdAction)
+	if(targetSuccess && actionSuccess)
 	{
-		case 'PICKUP':
-		case 'PICK UP':
-			execute_action = setInterval(opPickUp, opIntervalTime);
-			createFeedbackMsg('Action Execution Started: Operation Pick Up.');
-			break;
-		default:
-			createFeedbackMsg('Error: Could not execute: ' + cmdAction);
-			break;
+		switch(cmdAction)
+		{
+			case 'GRAB':
+			case 'PICKUP':
+			case 'PICK UP':
+				execute_action = setInterval(opPickUp, opIntervalTime);
+				createFeedbackMsg('Action Execution Started: Operation Pick Up.');
+				break;
+			default:
+				createFeedbackMsg('Error: Could not execute: ' + cmdAction);
+				break;
+		}
 	}
+	actionSuccess = false;
+	targetSuccess = false;
 }
 
 function movementComplete(desired_position)
 {
 	if(
-		((arm_target.base 		<= (desired_position.base + 5)) 		|| (arm_target.base 		>= (desired_position.base - 5)) ) 		&&
-		((arm_target.shoulder 	<= (desired_position.shoulder + 5)) 	|| (arm_target.shoulder 	>= (desired_position.shoulder - 5)) ) 	&&
-		((arm_target.elbow 		<= (desired_position.elbow + 5)) 		|| (arm_target.elbow 		>= (desired_position.elbow - 5)) ) 	&&
-		((arm_target.wrist 		<= (desired_position.wrist + 5)) 		|| (arm_target.wrist 		>= (desired_position.wrist - 5)) ) 	&&
-		((arm_target.wrist_rot 	<= (desired_position.wrist_rot + 5)) 	|| (arm_target.wrist_rot 	>= (desired_position.wrist_rot - 5)) )
+		((arm_data.base 		<= (desired_position.base + 5)) 		|| (arm_data.base 		>= (desired_position.base - 5)) ) 		&&
+		((arm_data.shoulder 	<= (desired_position.shoulder + 5)) 	|| (arm_data.shoulder 	>= (desired_position.shoulder - 5)) ) 	&&
+		((arm_data.elbow 		<= (desired_position.elbow + 5)) 		|| (arm_data.elbow 		>= (desired_position.elbow - 5)) ) 	&&
+		((arm_data.wrist 		<= (desired_position.wrist + 5)) 		|| (arm_data.wrist 		>= (desired_position.wrist - 5)) ) 	&&
+		((arm_data.wrist_rot 	<= (desired_position.wrist_rot + 5)) 	|| (arm_data.wrist_rot 	>= (desired_position.wrist_rot - 5)) )
 	)
 	{
 		return true;
@@ -621,11 +676,8 @@ function moveClaw(op)
 	console.log("Claw Motion: " + op);
 }
 
-var buffer;
-const armURL = 'http://192.168.4.1';
-var source_ap = new EventSource(armURL);
-
 setInterval(recieveArmDataSSE(),100);
+
 function recieveArmDataSSE()
 {
 	source_ap.onmessage = function(event)
@@ -641,9 +693,49 @@ function recieveArmDataSSE()
 	}
 }
 
-
 function parseArmData(data)
 {
-	//Do Nothing
+	if(!data)
+	{
+		return;
+	}
 
+	//Strip Braces
+	data = data.substr(1, data.length - 2);
+
+	const obj = {};
+	const properties = str.split(',');
+	for(const property of properties)
+	{
+		let [key, value] = property.split(':');
+		obj[key] = parseInt(value);
+	}
+
+	arm_data.base = obj.base;
+	arm_data.shoulder = obj.shoulder;
+	arm_data.elbow = obj.elbow;
+	arm_data.wrist = obj.wrist;
+	arm_data.wrist_rot = obj.wrist_rot;
+	renderData();
+
+}
+
+function renderData() 
+{
+	$("#base-recieve").val(arm_data.base).trigger('change');
+    $("#shoulder-recieve").val(arm_data.shoulder).trigger('change');
+    $("#elbow-recieve").val(arm_data.elbow).trigger('change');
+    $("#wrist-recieve").val(arm_data.wrist).trigger('change');
+    $("#wrist-rotation-recieve").val(arm_data.wrist_rot).trigger('change');
+    // $("claw-torque-recieved").value(arm_data.claw_torque); //IDK How to do this
+}
+
+function getElbow(distance)
+{
+	return default_position.elbow;
+}
+
+function getShoulder(height)
+{
+	return default_position.shoulder;
 }
