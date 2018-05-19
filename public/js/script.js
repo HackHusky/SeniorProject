@@ -180,6 +180,27 @@ $('#clear-cmds-btn').on('click',function(e)
   instructions.text("Sent-Commands have been cleared.");
 });
 
+$('#manual-push').on('click', function(e)
+{
+  arm_cmd.base = arm_manual.base;
+  arm_cmd.shoulder = arm_manual.shoulder;
+  arm_cmd.elbow = arm_manual.elbow;
+  arm_cmd.wrist = arm_manual.wrist;
+  arm_cmd.wrist_rot = arm_manual.wrist_rot;
+  arm_cmd.claw_torque = arm_manual.claw_torque;
+  sendData(arm_cmd);
+});
+
+$('#manual-pull').on('click', function(e)
+{
+    $("#base").val(arm_cmd.base).trigger('change');
+    $("#shoulder").val(arm_cmd.shoulder).trigger('change');
+    $("#elbow").val(arm_cmd.elbow).trigger('change');
+    $("#wrist").val(arm_cmd.wrist).trigger('change');
+    $("#wrist-rotation").val(arm_cmd.wrist_rot).trigger('change');
+    document.getElementById('claw-torque').value=arm_cmd.claw_torque;
+});
+
 usrCmdListLocation.on('click', function(e) {
   e.preventDefault();
   var target = $(e.target);

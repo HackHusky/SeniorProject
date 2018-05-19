@@ -71,8 +71,8 @@ $(document).ready(function() {
 	//Arm Control Panel Functions
     $("#base").knob({
     	'change': function(value){
-    		arm_data.base = value;
-    		console.log("arm_data.base = " + value);
+    		arm_manual.base = value;
+    		console.log("arm_manual.base = " + value);
     	}, 
     	'width':100,
     	'height':100,
@@ -81,8 +81,8 @@ $(document).ready(function() {
     });
     $("#shoulder").knob({
     	'change': function(value){
-    		arm_data.shoulder = value;
-    		console.log("arm_data.shoulder = " + value);
+    		arm_manual.shoulder = value;
+    		console.log("arm_manual.shoulder = " + value);
     	}, 
     	'width':100,
     	'height':100,
@@ -91,8 +91,8 @@ $(document).ready(function() {
     });
     $("#elbow").knob({
     	'change': function(value){
-    		arm_data.elbow = value;
-    		console.log("arm_data.elbow = " + value);
+    		arm_manual.elbow = value;
+    		console.log("arm_manual.elbow = " + value);
     	}, 
     	'width':100,
     	'height':100,
@@ -101,8 +101,8 @@ $(document).ready(function() {
     });
     $("#wrist").knob({
     	'change': function(value){
-    		arm_data.wrist = value;
-    		console.log("arm_data.wrist = " + value);
+    		arm_manual.wrist = value;
+    		console.log("arm_manual.wrist = " + value);
     	}, 
     	'width':100,
     	'height':100,
@@ -111,8 +111,8 @@ $(document).ready(function() {
     });
     $("#wrist-rotation").knob({
     	'change': function(value){
-    		arm_data.wrist_rot = value;
-    		console.log("arm_data.wrist_rot = " + value);
+    		arm_manual.wrist_rot = value;
+    		console.log("arm_manual.wrist_rot = " + value);
     	}, 
     	'width':100,
     	'height':100,
@@ -167,7 +167,7 @@ $(document).ready(function() {
 function updateClawTorque(val)
 {
 	document.getElementById('claw-torque').value=val;
-	arm_cmd.claw_torque = val;
+	arm_manual.claw_torque = val;
 }
 
 var objectData;
@@ -503,6 +503,7 @@ var arm_cmd = new armData; //THE MAIN ONE SENT TO BE EXECUTED
 var arm_target = new armData; //THE DESIRED POSITION
 var arm_data = new armData; //THE ACTUAL POSITION
 var default_position = new armData; //THE RESET POSITION
+var arm_manual = new armData; //UI POSITION
 
 
 var arm_operations = null;
@@ -727,7 +728,7 @@ function renderData()
     $("#elbow-recieve").val(arm_data.elbow).trigger('change');
     $("#wrist-recieve").val(arm_data.wrist).trigger('change');
     $("#wrist-rotation-recieve").val(arm_data.wrist_rot).trigger('change');
-    // $("claw-torque-recieved").value(arm_data.claw_torque); //IDK How to do this
+    document.getElementById('claw-torque-recieved').value=arm_data.claw_torque;
 }
 
 function getElbow(distance)
@@ -739,3 +740,4 @@ function getShoulder(height)
 {
 	return default_position.shoulder;
 }
+
